@@ -160,7 +160,7 @@ module.exports = function (app) {
 
   /**
    * @swagger
-   * /api/endereco:
+   * /api/endereco/{id}:
    *  delete:
    *    tags:
    *      - Endereco
@@ -185,10 +185,10 @@ module.exports = function (app) {
    *      name: token
    *      required: true
    *      description: Token de Autenticação
-   *    - in: body
-   *      name: enderecoDelete
+   *    - in: path
+   *      name: id
    *      required: true
-   *      description: Query Param
+   *      description: ID do endereço
    */
 
   app.delete("/api/endereco/:id", function (request, response) {
