@@ -160,7 +160,7 @@ module.exports = function (app) {
 
   /**
    * @swagger
-   * /api/endereco/{id}:
+   * /api/endereco:
    *  delete:
    *    tags:
    *      - Endereco
@@ -185,13 +185,13 @@ module.exports = function (app) {
    *      name: token
    *      required: true
    *      description: Token de Autenticação
-   *    - in: path
+   *    - in: query
    *      name: id
    *      required: true
    *      description: ID do endereço
    */
 
-  app.delete("/api/endereco/:id", function (request, response) {
+  app.delete("/api/endereco/", function (request, response) {
     token = request.headers["token"];
     if (token == null || token == "") {
       response
@@ -203,7 +203,7 @@ module.exports = function (app) {
     var usuario_id = conteudoDescriptografado.split("-")[0];
     console.log("Requisição de consulta realizada pelo usuario: " + usuario_id);
 
-    let endereco_id = request.params.id;
+    let endereco_id = request.query.id;
     db.Endereco.destroy({ where: { id: endereco_id } })
       .then(function (endereco) {
         response.status(200).send("Registro deletado com sucesso");
