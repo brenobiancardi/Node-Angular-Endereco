@@ -1,0 +1,30 @@
+<div class="body">
+  <div class="logon-container">
+    <section class="form">
+      <img src="/assets/logo_228.png" alt="EndFind" />
+
+      <form>
+        <!-- <h1 class="borda-texto">A busca chegou ao fim!</h1> -->
+        <h2 class="borda-texto">Faça seu logon</h2>
+
+        <input
+          class="login-input"
+          placeholder="Username"
+          [(ngModel)]="login.login"
+          name="Username"
+        />
+        <input
+          type="password"
+          class="login-input"
+          [(ngModel)]="login.senha"
+          name="Senha"
+        />
+        <button type="button" class="button" (click)="realizarLogin()">
+          Entrar
+        </button>
+        <button class="button cancelar" (click)="cancelar()">Voltar</button>
+      </form>
+    </section>
+    <img src="/assets/landing.png" alt="Heroes" />
+  </div>
+</div>

@@ -1,17 +1,14 @@
+# dependencies
 /aula_1/app03/node_modules
 /aula_2/node_modules
+/endereco/node_modules
+
+# Build files
 /endereco/dist
 /endereco/tmp
 /endereco/out-tsc
 endereco/bazel-out
 
-# dependencies
-/endereco/node_modules
-
-# profiling files
-/endereco/chrome-profiler-events*.json
-/endereco/speed-measure-plugin*.json
-
 # System Files
-endereco/.DS_Store
-endereco/Thumbs.db
+.DS_Store
+Thumbs.db
