@@ -2,7 +2,7 @@
 /aula_1/app03/node_modules
 /aula_2/node_modules
 /endereco/node_modules
-
+*/package-lock.json
 # Build files
 /endereco/dist
 /endereco/tmp
