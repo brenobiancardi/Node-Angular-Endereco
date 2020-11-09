@@ -1,3 +1,5 @@
+@import "@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 * {
   margin: 0;
   padding: 0;
@@ -82,4 +84,13 @@ form textarea {
 
 .back-link hover {
   opacity: 0.8;
+}
+.msg-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.msg-error {
+  background-color: #ee0000;
+  color: #fff;
 }

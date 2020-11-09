@@ -1,4 +1,4 @@
-import { Resposta } from './resposta.model';
+import { ResponseAPI } from './responseAPI.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -16,30 +16,47 @@ export class LoginService {
   showMessage(msg: string, isError: boolean = false): void {
     this.snackBar.open(msg, 'X', {
       duration: 3000,
-      horizontalPosition: 'left',
+      horizontalPosition: 'right',
       verticalPosition: 'top',
-      // panelClass: isError ? ['msg-error'] : ['msg-success'],
+      panelClass: isError ? ['msg-error'] : ['msg-success'],
     });
   }
 
-  errorHandler(e: any): Observable<any> {
-    this.showMessage('Erro na solicitação', true);
+  errorHandler(
+    e: any,
+    typeError: string,
+    authorized: boolean = false
+  ): Observable<any> {
+    if (authorized) {
+      this.showMessage(e);
+    } else if (typeError === 'manual') {
+      this.showMessage(e, true);
+    } else {
+      this.showMessage(
+        'Erro no servidor, se persistir o erro contate o suporte!',
+        true
+      );
+    }
     return EMPTY;
   }
 
-  processarResposta(resposta: any): void {
-    if (resposta.autenticado) {
-      localStorage.setItem('Token', resposta.token);
+  processResponse(response: ResponseAPI): Observable<any> {
+    if (response.autenticado) {
+      localStorage.setItem('Token', response.token);
+      return this.errorHandler('Login realizado com sucesso', 'manual', true);
     } else {
-      throw new Error();
+      return this.errorHandler(
+        'Erro no login, Verifique seu usuário e senha',
+        'manual'
+      );
     }
   }
 
-  tentarLogin(login: Login): Observable<Login> {
-    return this.http.post<Login>(this.baseUrl, login).pipe(
-      map((obj) => this.processarResposta(obj)),
+  tentarLogin(login: Login): Observable<ResponseAPI> {
+    return this.http.post<ResponseAPI>(this.baseUrl, login).pipe(
+      map((obj) => this.processResponse(obj)),
       catchError((e) => {
-        return this.errorHandler(e);
+        return this.errorHandler(e, 'auto');
       })
     );
   }

@@ -1,4 +1,4 @@
-export interface Resposta {
+export interface ResponseAPI {
   autenticado: boolean;
   token: string;
   usuario: {

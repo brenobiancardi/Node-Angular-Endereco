@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    localStorage.clear();
     this.login = {
       login: '',
       senha: '',
@@ -26,8 +27,10 @@ export class LoginComponent implements OnInit {
 
   realizarLogin(): void {
     this.loginService.tentarLogin(this.login).subscribe(() => {
-      this.loginService.showMessage('Enviada requisição de login!');
-      // this.router.navigate(['/login']);
+      const token = localStorage.getItem('Token');
+      if (token) {
+        this.router.navigate(['/address']);
+      }
     });
   }
 

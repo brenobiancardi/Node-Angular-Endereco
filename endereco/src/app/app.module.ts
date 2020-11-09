@@ -13,15 +13,13 @@ import { AddressComponent } from './components/address/address.component';
 
 // Angular material pra agilizar
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { HeaderComponent } from './components/template/header/header.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
     LoginComponent,
     AddressComponent,
-    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +28,6 @@ import { HeaderComponent } from './components/template/header/header.component';
     HttpClientModule,
     MatSnackBarModule,
     FormsModule,
-    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
