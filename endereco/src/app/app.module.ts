@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
@@ -7,19 +7,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { LandingPageComponent } from './landing-page/landing-page.component';
-import { LoginComponent } from './login/login.component';
-import { AddressComponent } from './address/address.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { LoginComponent } from './components/login/login.component';
+import { AddressComponent } from './components/address/address.component';
 
-// Angular material
+// Angular material pra agilizar
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { HeaderComponent } from './components/template/header/header.component';
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
     LoginComponent,
     AddressComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,6 +30,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     HttpClientModule,
     MatSnackBarModule,
     FormsModule,
+    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

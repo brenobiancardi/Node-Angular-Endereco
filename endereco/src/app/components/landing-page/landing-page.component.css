@@ -23,7 +23,7 @@
   flex-direction: column;
   justify-content: space-between;
 
-  background: url("../../assets/landing.png") no-repeat 110% center;
+  background: url("../../../assets/landing.png") no-repeat 110% center;
 }
 
 #page-landing .content-wrapper main {
