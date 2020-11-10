@@ -2,8 +2,6 @@
   width: 100vw;
   height: 100vh;
 
-  background: linear-gradient(329.54deg, #489bdf 0%, #6ab9fa 100%);
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,6 +20,9 @@
   align-items: flex-start;
   flex-direction: column;
   justify-content: space-between;
+
+  animation-name: fade-in;
+  animation-duration: 700ms;
 
   background: url("../../../assets/landing.png") no-repeat 110% center;
 }
@@ -68,4 +69,31 @@
 
 .borda-texto {
   text-shadow: 1px 1px black;
+}
+
+.animation-fade {
+  animation: fade-out;
+}
+
+/* Animação */
+@keyframes fade-out {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

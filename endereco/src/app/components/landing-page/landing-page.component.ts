@@ -9,4 +9,11 @@ export class LandingPageComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  fade(): void {
+    const pageLanding = document.getElementById('page-without-background');
+    if (pageLanding[0]) {
+      pageLanding[0].className.add('.animation-fade');
+    }
+  }
 }

@@ -12,17 +12,21 @@
           placeholder="Username"
           [(ngModel)]="login.login"
           name="Username"
+          autocomplete="Username"
         />
         <input
           type="password"
           class="login-input"
           [(ngModel)]="login.senha"
-          name="Senha"
+          name="Password"
+          autocomplete="current-password"
         />
         <button type="button" class="button" (click)="realizarLogin()">
           Entrar
         </button>
-        <button class="button cancelar" (click)="cancelar()">Voltar</button>
+        <button type="button" class="button cancelar" (click)="cancelar()">
+          Voltar
+        </button>
       </form>
     </section>
     <img src="/assets/landing.png" alt="Heroes" />

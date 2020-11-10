@@ -11,11 +11,7 @@ import { LoginService } from './login.service';
 export class LoginComponent implements OnInit {
   login: Login;
 
-  constructor(
-    private loginService: LoginService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private loginService: LoginService, private router: Router) {}
 
   ngOnInit(): void {
     localStorage.clear();
