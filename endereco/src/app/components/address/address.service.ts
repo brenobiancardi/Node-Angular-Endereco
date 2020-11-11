@@ -1,11 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { EMPTY, Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+import { Address } from './address.model';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AddressService {
-  constructor(private snackBar: MatSnackBar) {}
+  baseUrl = 'http://localhost:8777/api/endereco';
+
+  constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
 
   showMessage(msg: string, isError: boolean = false): void {
     this.snackBar.open(msg, 'X', {
@@ -16,33 +24,19 @@ export class AddressService {
     });
   }
 
-  errorHandler(
-    e: any,
-    typeError: string,
-    authorized: boolean = false
-  ): Observable<any> {
-    if (authorized) {
-      this.showMessage(e);
-    } else if (typeError === 'manual') {
-      this.showMessage(e, true);
-    } else {
-      this.showMessage(
-        'Erro no servidor, se persistir o erro contate o suporte!',
-        true
-      );
-    }
+  errorHandler(e: any): Observable<any> {
+    this.showMessage(e.error, true);
+    console.log(e);
+
     return EMPTY;
   }
 
-  // processResponse(response: ResponseAPI): Observable<any> {
-  //   if (response.autenticado) {
-  //     localStorage.setItem('Token', response.token);
-  //     return this.errorHandler('Login realizado com sucesso', 'manual', true);
-  //   } else {
-  //     return this.errorHandler(
-  //       'Erro no login, Verifique seu usuário e senha',
-  //       'manual'
-  //     );
-  //   }
-  // }
+  carregarEnderecos(options: any): Observable<Address[]> {
+    return this.http.get<Address[]>(this.baseUrl, options).pipe(
+      map((obj) => obj),
+      catchError((e) => {
+        return this.errorHandler(e);
+      })
+    );
+  }
 }

@@ -1,0 +1,76 @@
+.card {
+  max-width: 500px;
+  display: inline-block;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+  margin: 20px;
+  position: relative;
+  margin-bottom: 50px;
+  transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  margin-bottom: 54px;
+}
+
+.image {
+  height: 200px;
+  opacity: 0.7;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+.image:hover,
+.card:hover .image {
+  height: 200px;
+  opacity: 1;
+}
+
+.text {
+  background: #fff;
+  padding: 20px;
+  min-height: 200px;
+}
+
+.text p {
+  margin-bottom: 0px;
+}
+
+.button-group {
+  position: relative;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+}
+
+.circle-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-top: -50px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 48px;
+  line-height: 48px;
+  text-align: center;
+  -webkit-transition: -webkit-transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
+}
+
+.circle-button:hover {
+  cursor: pointer;
+  -ms-transform: rotate(15deg);
+  -webkit-transform: rotate(15deg);
+  transform: rotate(15deg);
+}
+
+.details {
+  background: #549d3c;
+}
+.edit {
+  background: #f1e14b;
+}
+.delete {
+  background: #f33636;
+}

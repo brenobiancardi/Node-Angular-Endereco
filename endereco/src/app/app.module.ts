@@ -9,17 +9,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { LoginComponent } from './components/login/login.component';
-import { AddressComponent } from './components/address/address.component';
 
 // Angular material pra agilizar
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AddressReadComponent } from './components/address/address-read/address-read.component';
+import { CardsComponent } from './components/template/cards/cards.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
     LoginComponent,
-    AddressComponent,
+    AddressReadComponent,
+    CardsComponent,
   ],
   imports: [
     BrowserModule,
