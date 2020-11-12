@@ -16,11 +16,11 @@ app.use(cors());
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
-      version: "1.0.99", // o final será a matrícula do aluno
+      version: "1.0.1615913", // o final será a matrícula do aluno
       title: "API Programação para Internet",
       description: "API de manipulação de informações da aplicação",
       contact: {
-        name: "Bruno Stoll", // nome e sobrenome do aluno
+        name: "Breno Biancardi de Sousa", // nome e sobrenome do aluno
       },
       servers: ["http://localhost:8777"],
     },

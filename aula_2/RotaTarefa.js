@@ -33,10 +33,14 @@ module.exports = function (app) {
   app.get("/api/endereco", function (request, response) {
     token = request.headers["token"];
     if (token == null || token == "") {
-      response.status(401).send("Usuário não autenticado");
+      response.status(401).send({ erro: "Usuário não autenticado" });
       return;
     }
     var conteudoDescriptografado = criptUtil.descriptografar(token).toString();
+    if (conteudoDescriptografado == "") {
+      response.status(401).send({ erro: "Usuário não autenticado" });
+      return;
+    }
     var usuario_id = conteudoDescriptografado.split("-")[0];
     console.log("Requisição de consulta realizada pelo usuario: " + usuario_id);
 
@@ -45,7 +49,7 @@ module.exports = function (app) {
         response.send(enderecos);
       })
       .catch(function (error) {
-        response.status(500).send("Erro: " + error.message);
+        response.status(500).send({ erro: "Erro no servidor" });
       });
   });
 
@@ -86,10 +90,14 @@ module.exports = function (app) {
   app.post("/api/endereco", function (request, response) {
     token = request.headers["token"];
     if (token == null || token == "") {
-      response.status(401).send("Usuário não autenticado");
+      response.status(401).send({ erro: "Usuário não autenticado" });
       return;
     }
     var conteudoDescriptografado = criptUtil.descriptografar(token).toString();
+    if (conteudoDescriptografado == "") {
+      response.status(401).send({ erro: "Usuário não autenticado" });
+      return;
+    }
     var usuario_id = conteudoDescriptografado.split("-")[0];
     console.log("Requisição de consulta realizada pelo usuario: " + usuario_id);
 
@@ -99,7 +107,7 @@ module.exports = function (app) {
         response.send({ mensagem: "registro gravado com sucesso!" });
       })
       .catch(function (error) {
-        response.status(500).send("Erro: " + error.message);
+        response.status(500).send({ erro: "Erro no servidor" });
       });
   });
   /**
@@ -139,10 +147,14 @@ module.exports = function (app) {
   app.put("/api/endereco", function (request, response) {
     token = request.headers["token"];
     if (token == null || token == "") {
-      response.status(401).send("Usuário não autenticado");
+      response.status(401).send({ erro: "Usuário não autenticado" });
       return;
     }
     var conteudoDescriptografado = criptUtil.descriptografar(token).toString();
+    if (conteudoDescriptografado == "") {
+      response.status(401).send({ erro: "Usuário não autenticado" });
+      return;
+    }
     var usuario_id = conteudoDescriptografado.split("-")[0];
     console.log("Requisição de consulta realizada pelo usuario: " + usuario_id);
 
@@ -152,9 +164,7 @@ module.exports = function (app) {
         response.send({ mensagem: "registro alterado com sucesso!" });
       })
       .catch(function (error) {
-        response
-          .status(500)
-          .send("Erro interno do servidor. Mensagem: " + error.message);
+        response.status(500).send({ erro: "Erro no servidor" });
       });
   });
 
@@ -192,25 +202,39 @@ module.exports = function (app) {
    */
 
   app.delete("/api/endereco/", function (request, response) {
-    token = request.headers["token"];
-    if (token == null || token == "") {
-      response
-        .status(401)
-        .send('Usuário não autenticado<br><a href="/home">Voltar</a>');
+    try {
+      token = request.headers["token"];
+      if (token == null || token == "") {
+        response.status(401).send({ erro: "Usuário não autenticado" });
+        return;
+      }
+      var conteudoDescriptografado = criptUtil
+        .descriptografar(token)
+        .toString();
+      if (conteudoDescriptografado == "") {
+        response.status(401).send({ erro: "Usuário não autenticado" });
+        return;
+      }
+
+      var usuario_id = conteudoDescriptografado.split("-")[0];
+      console.log(
+        "Requisição de consulta realizada pelo usuario: " + usuario_id
+      );
+
+      let endereco_id = request.query.id;
+      db.Endereco.destroy({ where: { id: endereco_id } })
+        .then(function (endereco) {
+          response.status(200).send({
+            mensagem: "Registro deletado com sucesso",
+          });
+        })
+        .catch(function (error) {
+          response.status(500).send(error.message);
+        });
+    } catch {
+      response.status(500).send({ erro: "Erro no servidor" });
       return;
     }
-    var conteudoDescriptografado = criptUtil.descriptografar(token).toString();
-    var usuario_id = conteudoDescriptografado.split("-")[0];
-    console.log("Requisição de consulta realizada pelo usuario: " + usuario_id);
-
-    let endereco_id = request.query.id;
-    db.Endereco.destroy({ where: { id: endereco_id } })
-      .then(function (endereco) {
-        response.status(200).send("Registro deletado com sucesso");
-      })
-      .catch(function (error) {
-        response.status(500).send(error.message);
-      });
   });
 };
 
