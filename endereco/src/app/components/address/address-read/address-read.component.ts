@@ -27,7 +27,6 @@ export class AddressReadComponent implements OnInit {
     this.addressService.carregarEnderecos(httpOptions).subscribe((address) => {
       this.loadedAddress = address;
     });
-    console.log(this.loadedAddress);
   }
 
   recuperarToken(): string {

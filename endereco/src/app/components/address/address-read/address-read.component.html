@@ -1,8 +1,4 @@
-<p>address-read works!</p>
-<app-cards></app-cards>
-<app-cards></app-cards>
-<app-cards></app-cards>
-<app-cards></app-cards>
-<app-cards></app-cards>
-<app-cards></app-cards>
-<app-cards></app-cards>
+<div id="list-cards">
+  <app-cards *ngFor="let load of loadedAddress" [inputAddress]="load">
+  </app-cards>
+</div>

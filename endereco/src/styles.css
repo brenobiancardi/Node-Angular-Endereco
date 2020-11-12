@@ -88,12 +88,12 @@ form textarea {
   opacity: 0.8;
 }
 .msg-success {
-  background-color: #28a745;
+  background-color: #37c77f;
   color: #fff;
 }
 
 .msg-error {
-  background-color: #37c77f;
+  background-color: #ff4500;
   color: #fff;
 }
 

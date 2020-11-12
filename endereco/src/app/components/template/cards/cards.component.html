@@ -8,9 +8,6 @@
 
         <div class="text">
           <div class="button-group">
-            <div class="circle-button details">
-              <img src="./../../../../assets/icons/details.svg" />
-            </div>
             <div class="circle-button edit">
               <img src="./../../../../assets/icons/edit.svg" />
             </div>
@@ -18,12 +15,19 @@
               <img src="./../../../../assets/icons/delete.svg" />
             </div>
           </div>
-
-          <h3>Rua dos bobo</h3>
-          <h4>Cep</h4>
-          <h4>Cep</h4>
-          <h4>Cep</h4>
-          <h4>Cep</h4>
+          <div id="information-address">
+            <a class="address">{{
+              "Logradouro: " + inputAddress.logradouro
+            }}</a>
+            <a class="address-details">{{ "Tipo: " + inputAddress.tpLogr }}</a>
+            <a class="address-details">{{
+              "Bairro: " + inputAddress.bairro
+            }}</a>
+            <a class="address-details">{{ "UF: " + inputAddress.uf }}</a>
+            <a class="address-details">{{
+              "Cidade: " + inputAddress.cidade
+            }}</a>
+          </div>
         </div>
       </div>
     </div>
