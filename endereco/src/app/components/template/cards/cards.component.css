@@ -92,3 +92,7 @@
   width: 40%;
   margin: 10px 10px 10px 0px;
 }
+
+.deleted {
+  visibility: hidden;
+}

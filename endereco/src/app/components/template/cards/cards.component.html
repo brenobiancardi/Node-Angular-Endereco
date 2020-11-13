@@ -8,12 +8,15 @@
 
         <div class="text">
           <div class="button-group">
-            <div class="circle-button edit">
+            <a class="circle-button edit" (click)="editAddress(inputAddress)">
               <img src="./../../../../assets/icons/edit.svg" />
-            </div>
-            <div class="circle-button delete">
+            </a>
+            <a
+              class="circle-button delete"
+              (click)="deleteAddress(inputAddress.id)"
+            >
               <img src="./../../../../assets/icons/delete.svg" />
-            </div>
+            </a>
           </div>
           <div id="information-address">
             <a class="address">{{

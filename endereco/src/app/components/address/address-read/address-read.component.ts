@@ -1,8 +1,10 @@
-import { Address } from '../address.model';
-import { AddressService } from '../address.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
+import { EventEmitterCard } from '../../template/cards/event-emitter-card';
+
+import { Address } from '../address.model';
+import { AddressService } from '../address.service';
 
 @Component({
   selector: 'app-address-read',
@@ -10,7 +12,6 @@ import { HttpHeaders } from '@angular/common/http';
   styleUrls: ['./address-read.component.css'],
 })
 export class AddressReadComponent implements OnInit {
-  token: string;
   loadedAddress: Address[];
 
   constructor(private addressService: AddressService, private router: Router) {}
@@ -40,6 +41,16 @@ export class AddressReadComponent implements OnInit {
     } else {
       this.addressService.showMessage('Token invalido, realize o login!', true);
       this.router.navigate(['/login']);
+    }
+  }
+
+  removeItem(itemEvent: EventEmitterCard): void {
+    if (itemEvent.deletado) {
+      this.loadedAddress.map((item) => {
+        if (item.id === itemEvent.id) {
+          this.loadedAddress.splice(this.loadedAddress.indexOf(item), 1);
+        }
+      });
     }
   }
 }

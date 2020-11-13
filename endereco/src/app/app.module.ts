@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,9 @@ import { LoginComponent } from './components/login/login.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AddressReadComponent } from './components/address/address-read/address-read.component';
 import { CardsComponent } from './components/template/cards/cards.component';
+import { AddressEditComponent } from './components/address/address-edit/address-edit.component';
+import { FormComponent } from './components/template/form/form.component';
+import { AddressCreateComponent } from './components/address/address-create/address-create.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import { CardsComponent } from './components/template/cards/cards.component';
     LoginComponent,
     AddressReadComponent,
     CardsComponent,
+    AddressEditComponent,
+    FormComponent,
+    AddressCreateComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,6 +36,7 @@ import { CardsComponent } from './components/template/cards/cards.component';
     HttpClientModule,
     MatSnackBarModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -12,6 +12,7 @@ import { Address } from './address.model';
 })
 export class AddressService {
   baseUrl = 'http://localhost:8777/api/endereco';
+  httpOptions: any; /*token*/
 
   constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
 
@@ -25,14 +26,33 @@ export class AddressService {
   }
 
   errorHandler(e: any): Observable<any> {
-    this.showMessage(e.error, true);
-    console.log(e);
+    this.showMessage(e.error.erro, true);
 
     return EMPTY;
   }
 
   carregarEnderecos(options: any): Observable<Address[]> {
+    this.httpOptions = options;
     return this.http.get<Address[]>(this.baseUrl, options).pipe(
+      map((obj) => obj),
+      catchError((e) => {
+        return this.errorHandler(e);
+      })
+    );
+  }
+
+  carregarEnderecoById(id: string): Observable<Address> {
+    const url = `${this.baseUrl}/${id}`;
+    return this.http.get<Address>(url, this.httpOptions).pipe(
+      map((obj) => obj),
+      catchError((e) => {
+        return this.errorHandler(e);
+      })
+    );
+  }
+  deleteEndereco(id: number): Observable<Address> {
+    const url = `${this.baseUrl}?id=${id}`;
+    return this.http.delete<Address>(url, this.httpOptions).pipe(
       map((obj) => obj),
       catchError((e) => {
         return this.errorHandler(e);

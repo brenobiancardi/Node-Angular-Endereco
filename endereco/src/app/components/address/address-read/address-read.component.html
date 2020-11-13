@@ -1,4 +1,8 @@
 <div id="list-cards">
-  <app-cards *ngFor="let load of loadedAddress" [inputAddress]="load">
+  <app-cards
+    *ngFor="let load of loadedAddress"
+    [inputAddress]="load"
+    (deletedItemEvent)="removeItem($event)"
+  >
   </app-cards>
 </div>
