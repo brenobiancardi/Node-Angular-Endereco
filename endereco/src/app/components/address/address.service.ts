@@ -1,11 +1,12 @@
 import { MessageService } from './../../message.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { Address } from './address.model';
+import { LoginService } from '../login/login.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +17,22 @@ export class AddressService {
 
   constructor(
     private http: HttpClient,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private loginService: LoginService
   ) {}
 
-  loadAddress(options: any): Observable<Address[]> {
+  token(): void {
+    const userToken = this.loginService.recoverToken();
+    this.loginService.verifyToken(userToken);
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        token: userToken,
+      }),
+    };
+  }
+
+  loadAddress(options: any = this.httpOptions): Observable<Address[]> {
     this.httpOptions = options;
     return this.http.get<Address[]>(this.baseUrl, options).pipe(
       map((obj) => obj),
@@ -29,9 +42,12 @@ export class AddressService {
     );
   }
 
-  loadAddressById(id: string): Observable<Address> {
+  loadAddressById(
+    id: string,
+    httpOptions: any = this.httpOptions
+  ): Observable<Address> {
     const url = `${this.baseUrl}/${id}`;
-    return this.http.get<Address>(url, this.httpOptions).pipe(
+    return this.http.get<Address>(url, httpOptions).pipe(
       map((obj) => obj),
       catchError((e) => {
         return this.messageService.errorHandler(e);
@@ -41,6 +57,15 @@ export class AddressService {
   deleteAddress(id: number): Observable<Address> {
     const url = `${this.baseUrl}?id=${id}`;
     return this.http.delete<Address>(url, this.httpOptions).pipe(
+      map((obj) => obj),
+      catchError((e) => {
+        return this.messageService.errorHandler(e);
+      })
+    );
+  }
+
+  editAddress(address: Address): Observable<Address> {
+    return this.http.put<Address>(this.baseUrl, address, this.httpOptions).pipe(
       map((obj) => obj),
       catchError((e) => {
         return this.messageService.errorHandler(e);

@@ -14,21 +14,11 @@ import { AddressService } from '../address.service';
 export class AddressReadComponent implements OnInit {
   loadedAddress: Address[];
 
-  constructor(
-    private addressService: AddressService,
-    private loginService: LoginService
-  ) {}
+  constructor(private addressService: AddressService) {}
 
   ngOnInit(): void {
-    const userToken = this.loginService.recoverToken();
-    this.loginService.verifyToken(userToken);
-    const httpOptions: any = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        token: userToken,
-      }),
-    };
-    this.addressService.loadAddress(httpOptions).subscribe((address) => {
+    this.addressService.token();
+    this.addressService.loadAddress().subscribe((address) => {
       this.loadedAddress = address;
     });
   }

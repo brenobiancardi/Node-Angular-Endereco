@@ -1,3 +1,5 @@
+import { AddressService } from './../../address/address.service';
+import { Router } from '@angular/router';
 import { Component, Input, OnInit } from '@angular/core';
 import { Address } from '../../address/address.model';
 import { UfModel } from './uf.model';
@@ -17,7 +19,11 @@ export class FormComponent implements OnInit {
 
   ufData: UfModel[];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private addressService: AddressService
+  ) {}
 
   ngOnInit(): void {
     this.ufData = estados;
@@ -39,5 +45,11 @@ export class FormComponent implements OnInit {
 
   onSubmit(dadosEndereco): void {
     console.log(dadosEndereco);
+    this.addressService.editAddress(dadosEndereco).subscribe((address) => {
+      this.address = address;
+    });
+  }
+  cancel(): void {
+    this.router.navigate(['/address']);
   }
 }

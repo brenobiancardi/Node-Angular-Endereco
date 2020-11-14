@@ -66,7 +66,6 @@
   padding: 0 16px;
 }
 
-/*Select colei da internet*/
 .select {
   margin-top: 40px;
   position: relative;
@@ -85,13 +84,11 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-/* Remove focus */
 .select-text:focus {
   outline: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0);
 }
 
-/* Use custom arrow */
 .select .select-text {
   appearance: none;
   -webkit-appearance: none;
@@ -101,7 +98,6 @@
   position: absolute;
   top: 18px;
   right: 10px;
-  /* Styling the down arrow */
   width: 0;
   height: 0;
   padding: 0;

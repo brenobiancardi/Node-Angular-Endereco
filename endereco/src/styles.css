@@ -87,6 +87,15 @@ form textarea {
 .back-link hover {
   opacity: 0.8;
 }
+
+.edit {
+  background: #f1e14b;
+}
+
+.delete {
+  background: #ff4500;
+}
+
 .msg-success {
   background-color: #37c77f;
   color: #fff;

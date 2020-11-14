@@ -5,7 +5,7 @@
     (ngSubmit)="onSubmit(address.value)"
   >
     <fieldset>
-      <legend>{{ typeForm }} Endereco</legend>
+      <legend>{{ typeForm }} endereco</legend>
 
       <div class="input-block">
         <label for="tpLogr">Tipo logradouro</label>
@@ -27,7 +27,6 @@
         <input id="cidade" formControlName="cidade" />
       </div>
 
-      <!-- Select peguei na internet, preguiça -->
       <div class="select">
         <select class="select-text" formControlName="uf">
           <option *ngFor="let uf of ufData" [ngValue]="uf.sigla">
@@ -41,5 +40,8 @@
     </fieldset>
 
     <button class="button" type="submit">Confirmar</button>
+    <button class="button delete" type="button" (click)="cancel()">
+      Cancelar
+    </button>
   </form>
 </div>
