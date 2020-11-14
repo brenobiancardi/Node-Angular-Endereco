@@ -66,6 +66,10 @@
   padding: 0 16px;
 }
 
+.invalid {
+  color: red;
+}
+
 .select {
   margin-top: 40px;
   position: relative;
@@ -164,4 +168,45 @@
   left: 0;
   pointer-events: none;
   opacity: 0.5;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 250px;
+  background-color: #777;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  line-height: 25px;
+
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #777 transparent transparent transparent;
+}
+
+.tooltip:hover:disabled .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }

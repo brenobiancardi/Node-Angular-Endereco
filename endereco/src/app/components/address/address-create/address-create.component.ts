@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Address } from '../address.model';
+import { AddressService } from '../address.service';
 
 @Component({
   selector: 'app-address-create',
@@ -8,7 +9,9 @@ import { Address } from '../address.model';
 })
 export class AddressCreateComponent implements OnInit {
   createdAddress: Address;
-  constructor() {}
+  constructor(private addressService: AddressService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.addressService.token();
+  }
 }

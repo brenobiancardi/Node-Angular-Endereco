@@ -1,5 +1,28 @@
+#main {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#toolbar {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 500px;
+  align-items: center;
+}
+
 #list-cards {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
+}
+
+.button-toolbar {
+  max-width: 40%;
+  position: relative;
+}
+.button-toolbar + .button-toolbar {
+  margin-left: 20px;
 }

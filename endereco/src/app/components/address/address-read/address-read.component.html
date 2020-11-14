@@ -1,8 +1,19 @@
-<div id="list-cards">
-  <app-cards
-    *ngFor="let load of loadedAddress"
-    [inputAddress]="load"
-    (deletedItemEvent)="removeItem($event)"
-  >
-  </app-cards>
+<div id="main">
+  <div id="toolbar">
+    <button class="button button-toolbar" type="button" (click)="create()">
+      Adicionar endereço
+    </button>
+    <button class="button button-toolbar edit" type="button" (click)="logoff()">
+      Logoff
+    </button>
+  </div>
+
+  <div id="list-cards">
+    <app-cards
+      *ngFor="let load of loadedAddress"
+      [inputAddress]="load"
+      (deletedItemEvent)="removeItem($event)"
+    >
+    </app-cards>
+  </div>
 </div>

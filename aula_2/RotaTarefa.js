@@ -52,6 +52,67 @@ module.exports = function (app) {
         response.status(500).send({ erro: "Erro no servidor" });
       });
   });
+  /**
+   * @swagger
+   * /api/endereco/{id}:
+   *  get:
+   *    tags:
+   *      - Endereco
+   *    description: Usado para obter enderecos
+   *    responses:
+   *      "200":
+   *        description: Sucesso
+   *        examples:
+   *          application/json: { "tpLogr": "string", "logradouro": "string", "bairro": "string", "cidade": "string", "uf": "string" }
+   *      "400":
+   *        description: Requisição Inválida
+   *      "401":
+   *        description: Usuário não autenticado
+   *      "403":
+   *        description: Sem permissão para executar esta operação
+   *      "404":
+   *        description: Recurso não encontrado
+   *      "500":
+   *        description: Erro interno do servidor
+   *    parameters:
+   *    - in: header
+   *      name: token
+   *      required: true
+   *      description: Token de Autenticação
+   *    - in: path
+   *      name: id
+   *      required: true
+   *      description: Id do endereco buscado
+   */
+  app.get("/api/endereco/:id", function (request, response) {
+    token = request.headers["token"];
+    if (token == null || token == "") {
+      response.status(401).send({ erro: "Usuário não autenticado" });
+      return;
+    }
+    var conteudoDescriptografado = criptUtil.descriptografar(token).toString();
+    if (conteudoDescriptografado == "") {
+      response.status(401).send({ erro: "Usuário não autenticado" });
+      return;
+    }
+    const endereco_id = request.params.id;
+
+    var usuario_id = conteudoDescriptografado.split("-")[0];
+    console.log(
+      "Requisição de consulta realizada pelo usuario: " +
+        usuario_id +
+        " buscando o id de valor: " +
+        endereco_id
+    );
+
+    db.Endereco.findOne({ where: { id: endereco_id } })
+      .then(function (enderecos) {
+        response.send(enderecos);
+      })
+      .catch(function (error) {
+        response.status(500).send({ erro: "Erro no servidor" });
+      });
+  });
 
   /**
    * @swagger
@@ -99,7 +160,7 @@ module.exports = function (app) {
       return;
     }
     var usuario_id = conteudoDescriptografado.split("-")[0];
-    console.log("Requisição de consulta realizada pelo usuario: " + usuario_id);
+    console.log("Requisição de inclusão realizada pelo usuario: " + usuario_id);
 
     let endereco = request.body;
     db.Endereco.create(endereco)
@@ -156,7 +217,9 @@ module.exports = function (app) {
       return;
     }
     var usuario_id = conteudoDescriptografado.split("-")[0];
-    console.log("Requisição de consulta realizada pelo usuario: " + usuario_id);
+    console.log(
+      "Requisição de alteração realizada pelo usuario: " + usuario_id
+    );
 
     let endereco = request.body;
     db.Endereco.update(endereco, { where: { id: endereco.id } })
@@ -217,9 +280,7 @@ module.exports = function (app) {
       }
 
       var usuario_id = conteudoDescriptografado.split("-")[0];
-      console.log(
-        "Requisição de consulta realizada pelo usuario: " + usuario_id
-      );
+      console.log("Requisição de delete realizada pelo usuario: " + usuario_id);
 
       let endereco_id = request.query.id;
       db.Endereco.destroy({ where: { id: endereco_id } })

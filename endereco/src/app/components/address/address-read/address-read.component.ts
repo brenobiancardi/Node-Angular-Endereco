@@ -1,3 +1,5 @@
+import { MessageService } from './../../../message.service';
+import { Router } from '@angular/router';
 import { LoginService } from './../../login/login.service';
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
@@ -14,7 +16,11 @@ import { AddressService } from '../address.service';
 export class AddressReadComponent implements OnInit {
   loadedAddress: Address[];
 
-  constructor(private addressService: AddressService) {}
+  constructor(
+    private addressService: AddressService,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.addressService.token();
@@ -31,5 +37,15 @@ export class AddressReadComponent implements OnInit {
         }
       });
     }
+  }
+
+  create(): void {
+    this.router.navigate(['/address/create']);
+  }
+
+  logoff(): void {
+    localStorage.clear();
+    this.messageService.showMessage('Logoff realizado com sucesso');
+    this.router.navigate(['/']);
   }
 }

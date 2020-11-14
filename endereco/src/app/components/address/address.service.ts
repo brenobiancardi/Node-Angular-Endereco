@@ -72,4 +72,15 @@ export class AddressService {
       })
     );
   }
+
+  createAddress(address: Address): Observable<Address> {
+    return this.http
+      .post<Address>(this.baseUrl, address, this.httpOptions)
+      .pipe(
+        map((obj) => obj),
+        catchError((e) => {
+          return this.messageService.errorHandler(e);
+        })
+      );
+  }
 }
