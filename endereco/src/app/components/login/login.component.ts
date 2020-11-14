@@ -21,8 +21,8 @@ export class LoginComponent implements OnInit {
     };
   }
 
-  realizarLogin(): void {
-    this.loginService.tentarLogin(this.login).subscribe(() => {
+  performLogin(): void {
+    this.loginService.tryLogin(this.login).subscribe(() => {
       const token = localStorage.getItem('Token');
       if (token) {
         this.router.navigate(['/address']);
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  cancelar(): void {
+  cancel(): void {
     this.router.navigate(['/']);
   }
 }

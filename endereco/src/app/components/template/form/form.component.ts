@@ -37,7 +37,7 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onSubmit(dadosEndereco) {
+  onSubmit(dadosEndereco): void {
     console.log(dadosEndereco);
   }
 }

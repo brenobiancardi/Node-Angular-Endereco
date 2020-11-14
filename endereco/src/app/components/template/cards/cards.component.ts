@@ -20,7 +20,7 @@ export class CardsComponent implements OnInit {
   ngOnInit(): void {}
 
   deleteAddress(id: number): void {
-    this.addresService.deleteEndereco(id).subscribe(() => {
+    this.addresService.deleteAddress(id).subscribe(() => {
       this.addresService.showMessage('Produto excluido com sucesso.');
       this.deletedItemEvent.emit({ id, deletado: true });
     });

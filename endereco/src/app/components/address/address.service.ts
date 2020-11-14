@@ -18,7 +18,7 @@ export class AddressService {
 
   showMessage(msg: string, isError: boolean = false): void {
     this.snackBar.open(msg, 'X', {
-      duration: 3000,
+      duration: 2000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
       panelClass: isError ? ['msg-error'] : ['msg-success'],
@@ -31,7 +31,7 @@ export class AddressService {
     return EMPTY;
   }
 
-  carregarEnderecos(options: any): Observable<Address[]> {
+  loadAddress(options: any): Observable<Address[]> {
     this.httpOptions = options;
     return this.http.get<Address[]>(this.baseUrl, options).pipe(
       map((obj) => obj),
@@ -41,7 +41,7 @@ export class AddressService {
     );
   }
 
-  carregarEnderecoById(id: string): Observable<Address> {
+  loadAddressById(id: string): Observable<Address> {
     const url = `${this.baseUrl}/${id}`;
     return this.http.get<Address>(url, this.httpOptions).pipe(
       map((obj) => obj),
@@ -50,7 +50,7 @@ export class AddressService {
       })
     );
   }
-  deleteEndereco(id: number): Observable<Address> {
+  deleteAddress(id: number): Observable<Address> {
     const url = `${this.baseUrl}?id=${id}`;
     return this.http.delete<Address>(url, this.httpOptions).pipe(
       map((obj) => obj),

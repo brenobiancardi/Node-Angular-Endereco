@@ -1,1 +1,2 @@
-<app-form [typeForm]="'Editando'"> </app-form>
+<app-form *ngIf="loadedAddress" [typeForm]="'Editando'" [data]="loadedAddress">
+</app-form>

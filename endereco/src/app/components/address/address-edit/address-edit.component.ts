@@ -11,6 +11,7 @@ import { AddressService } from '../address.service';
 })
 export class AddressEditComponent implements OnInit {
   loadedAddress: Address;
+
   constructor(
     private addressService: AddressService,
     private route: ActivatedRoute
@@ -18,7 +19,7 @@ export class AddressEditComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.addressService.carregarEnderecoById(id).subscribe((address) => {
+    this.addressService.loadAddressById(id).subscribe((address) => {
       this.loadedAddress = address;
     });
   }

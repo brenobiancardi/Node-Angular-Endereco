@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ResponseAPI } from './responseAPI.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -11,7 +12,11 @@ import { map, catchError } from 'rxjs/operators';
 export class LoginService {
   baseUrl = 'http://localhost:8777/usuarios/login';
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
+  constructor(
+    private http: HttpClient,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {}
 
   showMessage(msg: string, isError: boolean = false): void {
     this.snackBar.open(msg, 'X', {
@@ -52,12 +57,26 @@ export class LoginService {
     }
   }
 
-  tentarLogin(login: Login): Observable<ResponseAPI> {
+  tryLogin(login: Login): Observable<ResponseAPI> {
     return this.http.post<ResponseAPI>(this.baseUrl, login).pipe(
       map((obj) => this.processResponse(obj)),
       catchError((e) => {
         return this.errorHandler(e, 'auto');
       })
     );
+  }
+
+  recoverToken(): string {
+    const token = localStorage.getItem('Token');
+    return token;
+  }
+
+  verifyToken(token: string): void {
+    if (token) {
+      return;
+    } else {
+      this.showMessage('Token invalido, realize o login!', true);
+      this.router.navigate(['/login']);
+    }
   }
 }
