@@ -1,10 +1,11 @@
-import { AddressService } from './../../address/address.service';
-import { Router } from '@angular/router';
+import { MessageService } from './../../../message.service';
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 import { Address } from '../../address/address.model';
+import { AddressService } from './../../address/address.service';
 import { UfModel } from './uf.model';
 import { estados } from './uf.data.json';
-import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-form',
@@ -22,7 +23,8 @@ export class FormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private addressService: AddressService
+    private addressService: AddressService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -43,11 +45,16 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onSubmit(dadosEndereco): void {
-    console.log(dadosEndereco);
-    this.addressService.editAddress(dadosEndereco).subscribe((address) => {
-      this.address = address;
-    });
+  onSubmit(dadosEndereco: Address): void {
+    if (this.typeForm === 'Editando') {
+      this.addressService.editAddress(dadosEndereco).subscribe((address) => {
+        this.address = this.formBuilder.group(address);
+        this.messageService.showMessage('Endereco atualizado.');
+        this.router.navigate(['/address']);
+      });
+    } else if (this.typeForm === 'Novo') {
+      console.log('novo registro');
+    }
   }
   cancel(): void {
     this.router.navigate(['/address']);
