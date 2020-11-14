@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
+const config = require("./config");
 const sequelize = new Sequelize("tarefas_bd", "root", "", {
-  host: "localhost",
+  host: config.host,
   dialect: "mysql",
 });
 

@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:5.5.62
+    container_name: api-endereco-db
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_DATABASE: tarefas_bd
+    volumes:
+      - ./MySQL:/docker-entrypoint-initdb.d
+  backend-app:
+    build: .
+    container_name: api-endereco-backend
+    user: node
+    stdin_open: true
+    tty: true
+    ports:
+      - "8777:8777"
+    expose:
+      - 8777
+    environment:
+      - DB_HOST=db
+    volumes:
+      - ./backend:/home/node/app
+    entrypoint: ./.docker/entrypoint.sh
+  frontend-app:
+    build: .
+    container_name: api-endereco-frontend
+    user: node
+    stdin_open: true
+    tty: true
+    ports:
+      - "4200:4200"
+    expose:
+      - 4200
+    volumes:
+      - ./endereco:/home/node/app
+    environment:
+      NG_CLI_ANALYTICS: "ci"
+    links:
+      - "backend-app:backend"
+    entrypoint: ./.docker/entrypoint.sh
+volumes:
+  data:

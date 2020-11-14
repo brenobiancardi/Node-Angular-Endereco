@@ -36,5 +36,5 @@ var rtUsuario = require("./RotaUsuario")(app);
 var rtTarefa = require("./RotaTarefa")(app);
 
 app.listen(8777, function () {
-  console.log("Servidor executando");
+  console.log("Servidor executando!");
 });

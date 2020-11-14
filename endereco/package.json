@@ -2,12 +2,7 @@
   "name": "endereco",
   "version": "1.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "start": "ng serve --host 0.0.0.0 --port 4200"
   },
   "private": true,
   "dependencies": {

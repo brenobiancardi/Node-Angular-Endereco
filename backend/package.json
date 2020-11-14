@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon AppExpress.js"
+    "start": "node AppExpress.js"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +19,6 @@
     "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6",
     "sequelize-cli": "^6.2.0"
   },
   "description": ""
