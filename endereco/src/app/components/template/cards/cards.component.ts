@@ -1,3 +1,4 @@
+import { MessageService } from './../../../message.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { AddressService } from './../../address/address.service';
@@ -11,7 +12,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./cards.component.css'],
 })
 export class CardsComponent implements OnInit {
-  constructor(private addresService: AddressService, private router: Router) {}
+  constructor(
+    private addresService: AddressService,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
   @Input() inputAddress: Address;
 
@@ -21,7 +26,7 @@ export class CardsComponent implements OnInit {
 
   deleteAddress(id: number): void {
     this.addresService.deleteAddress(id).subscribe(() => {
-      this.addresService.showMessage('Produto excluido com sucesso.');
+      this.messageService.showMessage('Produto excluido com sucesso.');
       this.deletedItemEvent.emit({ id, deletado: true });
     });
   }
