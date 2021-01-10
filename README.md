@@ -1,16 +1,31 @@
 # Aula de Programação para internet
 
+## API em refatoracao
+
+O backend da aplicacao encontra-se em refatoração usando [NESTJS](https://nestjs.com/) e com testes construidos em [JESTJS](https://jestjs.io/)
+
+Resolvi fazer essa refatoração para estudar testes e tornar o codigo da aplicação mais organizado, visto que durante o desenvolvimento deu-se mais foco na construção frontend da aplicação.
+
+![API em refatoracao](https://miro.medium.com/max/700/0*yeiEBDgIpv33PCJc.jpg)
+
 ## **Sobre o projeto**:
 
 **Projeto desenvolvido durante o curso da disciplina Programação para a internet do curso de Engenharia da Computação**
 
-Este projeto foi desenvolvido com o objetivo de estudar o desenvolvimento de aplicacões WEB utilizando a arquitetura de software REST, a ferramenta de documentação [Swagger](https://swagger.io/), os frameworks de desenvolvimento [NodeJS](https://nodejs.org/en/) e [Angular](https://angular.io/), a criação dessa aplicação não teve o objetivo de ser segura para a utilização em ambiente de produção, utilize apenas para estudos.
+Este projeto foi desenvolvido com o objetivo de estudar o desenvolvimento de aplicacões WEB utilizando a arquitetura de software REST, em ambiente [NodeJS](https://nodejs.org/en/) utilizando a ferramenta de documentação [Swagger](https://swagger.io/) e os frameworks de desenvolvimento [Express](https://expressjs.com/pt-br/) e [Angular](https://angular.io/), a criação dessa aplicação não teve o objetivo de ser segura para a utilização em ambiente de produção, utilize apenas para estudos.
 
 A aplicação consiste de um cadastro de endereços.
 
 A documentação em Swagger da api do backend pode ser acessada apos a execução da mesma, no link: `http://localhost:8777/api-docs/`
 
 A interface da aplicação fica disponivel no link: `http://localhost:4200`
+
+## Telas
+
+![Tela inicial](inicial-page.png)
+![Tela de login](login-page.png)
+![Tela de listagem](listagem-page.png)
+![Tela de edicao](edicao-page.png)
 
 ## **Como executar o projeto**
 
@@ -70,4 +85,4 @@ Apos essa configuracao dirija-se a pasta backend com algum terminal e digite o c
 
 Apos essa configuracao dirija-se a pasta fronend com algum terminal e digite o comando `npm install` e concluida a instalação de dependencia utilizar o comando `npm start`;
 
-> Obs: Se houver algum erro com que cite `ng serve`, rode o comando `npm i -g @angular/cli@10.2.0 ` e novamente execute o comando `npm start`
+> Obs: Se houver algum erro que cite `ng serve`, rode o comando `npm i -g @angular/cli@10.2.0 ` e novamente execute o comando `npm start`
