@@ -1,9 +1,6 @@
-# dependencies
-/backend/node_modules
-/endereco/node_modules
+*/node_modules
 */package-lock.json
-# Build files
-/endereco/dist
+*/dist
 /endereco/tmp
 /endereco/out-tsc
-
+*/coverage
