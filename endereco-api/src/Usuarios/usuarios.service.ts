@@ -24,4 +24,8 @@ export class UsuariosService {
     const usuarioCriado = await this.usuarioModel.create(usuario);
     return usuarioCriado;
   }
+
+  async deletar(login: string): Promise<number> {
+    return this.usuarioModel.destroy({ where: { login } });
+  }
 }

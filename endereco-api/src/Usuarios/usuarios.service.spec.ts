@@ -12,6 +12,7 @@ describe('UsuariosService', () => {
     findAll: jest.fn(),
     findOne: jest.fn(),
     create: jest.fn(),
+    destroy: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -54,7 +55,7 @@ describe('UsuariosService', () => {
     expect(usuarioRetornado).toEqual([usuario]);
   });
 
-  it('Criar um usuario', async () => {
+  it('Deve criar um usuario', async () => {
     const usuario = TestUtil.fornecaMeUmUsuarioValido();
 
     usuariosMockModel.create.mockReturnValue([usuario]);
@@ -67,5 +68,15 @@ describe('UsuariosService', () => {
 
     expect(usuarioRetornado).toHaveLength(1);
     expect(usuarioRetornado).toEqual([usuario]);
+  });
+
+  it('Deve excluir um usuario', async () => {
+    const usuario = TestUtil.fornecaMeUmUsuarioValido();
+
+    usuariosMockModel.destroy.mockReturnValue([1]);
+
+    const numExcluidos = await usuariosService.deletar(String(usuario.id));
+
+    expect(numExcluidos).toEqual([1]);
   });
 });

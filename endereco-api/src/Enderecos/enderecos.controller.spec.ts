@@ -1,3 +1,4 @@
+import { EnderecosService } from './enderecos.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { EnderecosController } from './enderecos.controller';
 
@@ -7,12 +8,13 @@ describe('EnderecosController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [EnderecosController],
+      imports: [EnderecosService],
     }).compile();
 
     controller = module.get<EnderecosController>(EnderecosController);
   });
 
-  it('should be defined', () => {
+  it('Deve estar definido', () => {
     expect(controller).toBeDefined();
   });
 });

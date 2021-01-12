@@ -46,7 +46,7 @@ describe('EnderecosService', () => {
 
     enderecosMockModel.findAll.mockReturnValue([endereco]);
 
-    const usuarioRetornado = await enderecosService.obterPorLogin('breno');
+    const usuarioRetornado = await enderecosService.obterPorId('1');
 
     expect(usuarioRetornado).toHaveLength(1);
     expect(usuarioRetornado).toEqual([endereco]);
