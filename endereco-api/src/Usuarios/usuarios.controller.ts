@@ -1,20 +1,40 @@
-import { Res } from '@nestjs/common';
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
-import { response } from 'express';
-import { UsuarioDTO } from './Usuario/usuario.interface';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
+
 import { UsuariosService } from './usuarios.service';
 
+import { UsuarioDTO } from './Usuario/usuario.interface';
+import { IUsuarioRespostas } from './../common/respostas/usuarioRespostas.interface';
 @Controller('usuarios')
 export class UsuariosController {
   constructor(private usuariosService: UsuariosService) {}
 
-  @Post('create')
-  async criar(@Body() criarUsuario: UsuarioDTO): Promise<UsuarioDTO> {
+  @Post()
+  async criar(@Body() criarUsuario: UsuarioDTO): Promise<IUsuarioRespostas> {
     return this.usuariosService.criar(criarUsuario);
   }
 
+  @Post('login')
+  async realizarLogin(@Body() { login, senha }): Promise<IUsuarioRespostas> {
+    return this.usuariosService.realizarLogin(login, senha);
+  }
+
+  @Put()
+  async alterar(@Body() usuario: UsuarioDTO): Promise<IUsuarioRespostas> {
+    const id = usuario.id;
+    delete usuario.id;
+    return this.usuariosService.alterar(id, usuario);
+  }
+
   @Get()
-  async listar(@Query('login') login: string): Promise<UsuarioDTO[]> {
+  async listar(@Query('login') login: string): Promise<IUsuarioRespostas> {
     if (login) {
       return this.usuariosService.obterPorLogin(login);
     }
@@ -22,24 +42,7 @@ export class UsuariosController {
   }
 
   @Delete()
-  async delete(@Res() resposta, @Query('login') login: string): Promise<any> {
-    const respostaMSG = {
-      erro: true,
-      mensagem: `Erro na exclusao do usuario possuidor do login: ${login} Não encontrado`,
-    };
-    let codigoHTTP = 400;
-
-    if (login) {
-      const numExcluidos = await this.usuariosService.deletar(login);
-      if (numExcluidos === 1) {
-        respostaMSG.erro = false;
-        codigoHTTP = 200;
-        respostaMSG.mensagem = `Usuario de login: ${login} excluido com sucesso`;
-      } else if (numExcluidos === 0) {
-        codigoHTTP = 404;
-        respostaMSG.mensagem = `Usuario de login: ${login} não encontrado`;
-      }
-    }
-    return resposta.status(codigoHTTP).json(respostaMSG);
+  async delete(@Query('login') login: string): Promise<IUsuarioRespostas> {
+    return this.usuariosService.deletar(login);
   }
 }

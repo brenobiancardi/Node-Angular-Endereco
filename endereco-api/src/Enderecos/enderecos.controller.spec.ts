@@ -1,20 +1,36 @@
-import { EnderecosService } from './enderecos.service';
 import { Test, TestingModule } from '@nestjs/testing';
+import { EnderecosService } from './enderecos.service';
 import { EnderecosController } from './enderecos.controller';
+import { getModelToken } from '@nestjs/sequelize';
+import { Endereco } from './endereco.entity';
 
 describe('EnderecosController', () => {
-  let controller: EnderecosController;
+  let enderecosController: EnderecosController;
+
+  const enderecosMockModel = {
+    findAll: jest.fn(),
+    findOne: jest.fn(),
+    create: jest.fn(),
+  };
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const enderecosModule: TestingModule = await Test.createTestingModule({
       controllers: [EnderecosController],
-      imports: [EnderecosService],
+      providers: [
+        EnderecosService,
+        {
+          provide: getModelToken(Endereco),
+          useValue: enderecosMockModel,
+        },
+      ],
     }).compile();
 
-    controller = module.get<EnderecosController>(EnderecosController);
+    enderecosController = enderecosModule.get<EnderecosController>(
+      EnderecosController,
+    );
   });
 
   it('Deve estar definido', () => {
-    expect(controller).toBeDefined();
+    expect(enderecosController).toBeDefined();
   });
 });

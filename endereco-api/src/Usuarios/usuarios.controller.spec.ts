@@ -1,36 +1,40 @@
-import { UsuariosService } from './usuarios.service';
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import { AppModule } from 'src/app.module';
-import { UsuariosController } from './usuarios.controller';
-import * as request from 'supertest';
-import TestUtil from 'src/common/test/TestUtil';
+import { Test } from '@nestjs/testing';
+import { getModelToken } from '@nestjs/sequelize';
 
-describe('UsuariosController', () => {
-  let controller: UsuariosController;
-  let app: INestApplication;
+import { UsuariosController } from './usuarios.controller';
+import { UsuariosService } from './usuarios.service';
+import { Usuario } from './usuario.entity';
+
+import TestUtil from '../common/testes/TestUtil';
+
+describe('usuariosController', () => {
+  let usuariosController: UsuariosController;
+
+  const usuariosMockModel = {
+    findAll: jest.fn(),
+    findOne: jest.fn(),
+    create: jest.fn(),
+    destroy: jest.fn(),
+  };
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const moduleUsuarios = await Test.createTestingModule({
       controllers: [UsuariosController],
-      imports: [AppModule, UsuariosService],
+      providers: [
+        UsuariosService,
+        {
+          provide: getModelToken(Usuario),
+          useValue: usuariosMockModel,
+        },
+      ],
     }).compile();
 
-    controller = module.get<UsuariosController>(UsuariosController);
-    app = module.createNestApplication();
-    await app.init();
+    usuariosController = moduleUsuarios.get<UsuariosController>(
+      UsuariosController,
+    );
   });
 
   it('Deve estar definido', () => {
-    expect(controller).toBeDefined();
-  });
-
-  it('/ (GET)', () => {
-    const usuario = TestUtil.fornecaMeUmUsuarioValido();
-
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect([usuario, usuario]);
+    expect(usuariosController).toBeDefined();
   });
 });

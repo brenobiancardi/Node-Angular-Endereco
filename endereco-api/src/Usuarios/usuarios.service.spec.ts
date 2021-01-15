@@ -1,6 +1,8 @@
-import { getModelToken } from '@nestjs/sequelize';
 import { Test, TestingModule } from '@nestjs/testing';
-import TestUtil from '../common/test/TestUtil';
+import TestUtil from '../common/testes/TestUtil';
+
+import { getModelToken } from '@nestjs/sequelize';
+
 import { Usuario } from './usuario.entity';
 
 import { UsuariosService } from './usuarios.service';

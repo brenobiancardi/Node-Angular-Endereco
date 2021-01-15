@@ -2,7 +2,7 @@ import { Endereco } from './endereco.entity';
 import { getModelToken } from '@nestjs/sequelize';
 import { Test, TestingModule } from '@nestjs/testing';
 import { EnderecosService } from './enderecos.service';
-import TestUtil from '../common/test/TestUtil';
+import TestUtil from '../common/testes/TestUtil';
 
 describe('EnderecosService', () => {
   let enderecosService: EnderecosService;
@@ -44,7 +44,7 @@ describe('EnderecosService', () => {
   it('Deve listar o usuario filtrado', async () => {
     const endereco = TestUtil.fornecaMeUmEnderecoValido();
 
-    enderecosMockModel.findAll.mockReturnValue([endereco]);
+    enderecosMockModel.findOne.mockReturnValue([endereco]);
 
     const usuarioRetornado = await enderecosService.obterPorId('1');
 

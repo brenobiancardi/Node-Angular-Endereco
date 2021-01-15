@@ -12,10 +12,15 @@ export class Usuario extends Model<Usuario> {
   })
   tipoUsuario?: string;
 
-  @Column
+  @Column({
+    allowNull: false,
+  })
   nome: string;
 
-  @Column
+  @Column({
+    allowNull: false,
+    unique: true,
+  })
   login: string;
 
   @Column

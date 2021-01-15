@@ -1,5 +1,6 @@
-import { EnderecoDTO } from './../../Enderecos/Endereco/endereco.interface';
-import { UsuarioDTO } from './../../Usuarios/Usuario/usuario.interface';
+import { Usuario } from '../../Usuarios/usuario.entity';
+import { EnderecoDTO } from '../../Enderecos/Endereco/endereco.interface';
+import { UsuarioDTO } from '../../Usuarios/Usuario/usuario.interface';
 
 export default class TestUtil {
   static fornecaMeUmUsuarioValido(): UsuarioDTO {

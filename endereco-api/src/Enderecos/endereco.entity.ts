@@ -10,7 +10,10 @@ export class Endereco extends Model<Endereco> {
   })
   tpLogr?: string;
 
-  @Column
+  @Column({
+    allowNull: false,
+    unique: true,
+  })
   logradouro: string;
 
   @Column
