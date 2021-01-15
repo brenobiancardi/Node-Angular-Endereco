@@ -36,49 +36,59 @@ describe('UsuariosService', () => {
   });
 
   it('Deve listar todos os usuarios', async () => {
-    const usuario = TestUtil.fornecaMeUmUsuarioValido();
+    const usuario = TestUtil.fornecaMeUmUsuarioRespostaValido(2);
 
     usuariosMockModel.findAll.mockReturnValue([usuario, usuario]);
 
     const usuarioRetornado = await usuariosService.obterTodos();
 
-    expect(usuarioRetornado).toHaveLength(2);
-    expect(usuarioRetornado).toEqual([usuario, usuario]);
+    expect(usuarioRetornado.status).toEqual(200);
+    expect(usuarioRetornado.usuario).toHaveLength(2);
   });
 
   it('Deve listar o usuario filtrado', async () => {
-    const usuario = TestUtil.fornecaMeUmUsuarioValido();
+    const usuario = TestUtil.fornecaMeUsuariosValidos(1);
 
-    usuariosMockModel.findAll.mockReturnValue([usuario]);
+    usuariosMockModel.findOne.mockReturnValue(usuario);
+    let login = '';
+    if (usuario.login) {
+      login = usuario.login;
+    } else {
+      login = usuario[0].login;
+    }
 
-    const usuarioRetornado = await usuariosService.obterPorLogin('breno');
+    const usuarioRetornado = await usuariosService.obterPorLogin(login);
 
-    expect(usuarioRetornado).toHaveLength(1);
-    expect(usuarioRetornado).toEqual([usuario]);
+    expect(usuarioRetornado.status).toEqual(200);
+    expect(usuarioRetornado.usuario).toEqual(usuario);
   });
 
   it('Deve criar um usuario', async () => {
-    const usuario = TestUtil.fornecaMeUmUsuarioValido();
+    const usuario = TestUtil.fornecaMeUsuariosValidos(1);
 
-    usuariosMockModel.create.mockReturnValue([usuario]);
+    usuariosMockModel.create.mockReturnValue(usuario);
 
-    delete usuario.id;
-    delete usuario.updatedAt;
-    delete usuario.createdAt;
+    const usuarioTeste = usuario;
+    delete usuarioTeste.id;
+    delete usuarioTeste.updatedAt;
+    delete usuarioTeste.createdAt;
 
     const usuarioRetornado = await usuariosService.criar(usuario);
 
-    expect(usuarioRetornado).toHaveLength(1);
-    expect(usuarioRetornado).toEqual([usuario]);
+    expect(usuarioRetornado.status).toEqual(200);
+    expect(usuarioRetornado.usuario).toEqual(usuario);
   });
 
   it('Deve excluir um usuario', async () => {
-    const usuario = TestUtil.fornecaMeUmUsuarioValido();
+    const usuario = TestUtil.fornecaMeUsuariosValidos(1);
 
-    usuariosMockModel.destroy.mockReturnValue([1]);
+    usuariosMockModel.destroy.mockReturnValue(1);
 
-    const numExcluidos = await usuariosService.deletar(String(usuario.id));
+    const resposta = await usuariosService.deletar(usuario.login);
 
-    expect(numExcluidos).toEqual([1]);
+    expect(resposta.status).toEqual(200);
+    expect(resposta.mensagem).toEqual(
+      `Usuario ${usuario.login} excluido com sucesso`,
+    );
   });
 });

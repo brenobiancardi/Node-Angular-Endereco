@@ -1,4 +1,4 @@
-export interface UsuarioDTO {
+export interface IUsuarioDTO {
   id?: number;
   tipoUsuario?: string;
   nome: string;

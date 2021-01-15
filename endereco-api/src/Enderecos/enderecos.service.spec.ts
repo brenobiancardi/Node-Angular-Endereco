@@ -31,39 +31,47 @@ describe('EnderecosService', () => {
   });
 
   it('Deve listar todos os usuarios', async () => {
-    const endereco = TestUtil.fornecaMeUmEnderecoValido();
+    const endereco = TestUtil.fornecaMeEnderecosValidos(2);
 
-    enderecosMockModel.findAll.mockReturnValue([endereco, endereco]);
+    enderecosMockModel.findAll.mockReturnValue(endereco);
 
     const enderecoRetornado = await enderecosService.obterTodos();
 
-    expect(enderecoRetornado).toHaveLength(2);
-    expect(enderecoRetornado).toEqual([endereco, endereco]);
+    expect(enderecoRetornado.status).toEqual(200);
+    expect(enderecoRetornado.endereco).toHaveLength(2);
   });
 
   it('Deve listar o usuario filtrado', async () => {
-    const endereco = TestUtil.fornecaMeUmEnderecoValido();
+    const endereco = TestUtil.fornecaMeEnderecosValidos(1);
+    let id = 0;
+    enderecosMockModel.findOne.mockReturnValue(endereco);
 
-    enderecosMockModel.findOne.mockReturnValue([endereco]);
+    if (endereco.id) {
+      id = endereco.id;
+    } else {
+      id = endereco[0].id;
+    }
 
-    const usuarioRetornado = await enderecosService.obterPorId('1');
+    const enderecoRetornado = await enderecosService.obterPorId(String(id));
 
-    expect(usuarioRetornado).toHaveLength(1);
-    expect(usuarioRetornado).toEqual([endereco]);
+    expect(enderecoRetornado.status).toEqual(200);
+    expect(enderecoRetornado.endereco).toEqual(endereco);
   });
 
   it('Criar um usuario', async () => {
-    const endereco = TestUtil.fornecaMeUmEnderecoValido();
+    const endereco = TestUtil.fornecaMeEnderecosValidos(1);
 
-    enderecosMockModel.create.mockReturnValue([endereco]);
+    enderecosMockModel.create.mockReturnValue(endereco);
 
-    delete endereco.id;
-    delete endereco.updatedAt;
-    delete endereco.createdAt;
+    const enderecoInput = endereco;
 
-    const usuarioRetornado = await enderecosService.criar(endereco);
+    delete enderecoInput.id;
+    delete enderecoInput.updatedAt;
+    delete enderecoInput.createdAt;
 
-    expect(usuarioRetornado).toHaveLength(1);
-    expect(usuarioRetornado).toEqual([endereco]);
+    const enderecoRetornado = await enderecosService.criar(enderecoInput);
+
+    expect(enderecoRetornado.status).toEqual(200);
+    expect(enderecoRetornado.endereco).toEqual(endereco);
   });
 });

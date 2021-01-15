@@ -10,14 +10,14 @@ import {
 
 import { UsuariosService } from './usuarios.service';
 
-import { UsuarioDTO } from './Usuario/usuario.interface';
+import { IUsuarioDTO } from './Usuario/usuario.interface';
 import { IUsuarioRespostas } from './../common/respostas/usuarioRespostas.interface';
 @Controller('usuarios')
 export class UsuariosController {
   constructor(private usuariosService: UsuariosService) {}
 
   @Post()
-  async criar(@Body() criarUsuario: UsuarioDTO): Promise<IUsuarioRespostas> {
+  async criar(@Body() criarUsuario: IUsuarioDTO): Promise<IUsuarioRespostas> {
     return this.usuariosService.criar(criarUsuario);
   }
 
@@ -27,7 +27,7 @@ export class UsuariosController {
   }
 
   @Put()
-  async alterar(@Body() usuario: UsuarioDTO): Promise<IUsuarioRespostas> {
+  async alterar(@Body() usuario: IUsuarioDTO): Promise<IUsuarioRespostas> {
     const id = usuario.id;
     delete usuario.id;
     return this.usuariosService.alterar(id, usuario);

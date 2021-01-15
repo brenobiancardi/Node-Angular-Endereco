@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { Usuario } from './usuario.entity';
-import { UsuarioDTO } from './Usuario/usuario.interface';
+import { IUsuarioDTO } from './Usuario/usuario.interface';
 
 import { IUsuarioRespostas } from './../common/respostas/usuarioRespostas.interface';
 @Injectable()
@@ -51,7 +51,7 @@ export class UsuariosService {
     }
   }
 
-  async criar(usuario: UsuarioDTO): Promise<IUsuarioRespostas> {
+  async criar(usuario: IUsuarioDTO): Promise<IUsuarioRespostas> {
     let mensagem = `Erro na criação do usuario ${usuario.login}`;
     let codigoHTTP = HttpStatus.BAD_REQUEST;
     if (usuario) {
@@ -88,7 +88,7 @@ export class UsuariosService {
     );
   }
 
-  async alterar(id: number, usuario: UsuarioDTO): Promise<IUsuarioRespostas> {
+  async alterar(id: number, usuario: IUsuarioDTO): Promise<IUsuarioRespostas> {
     let mensagem = `Erro na alteração do usuario ${usuario.login}`;
     let codigoHTTP = HttpStatus.BAD_REQUEST;
     if (id) {

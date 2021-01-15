@@ -1,4 +1,4 @@
-export interface EnderecoDTO {
+export interface IEnderecoDTO {
   id?: number;
   tpLogr?: string;
   logradouro: string;
