@@ -7,12 +7,13 @@ export class Endereco extends Model<Endereco> {
 
   @Column({
     type: DataType.STRING(15),
+    unique: 'UNIQUELOGR',
   })
   tpLogr?: string;
 
   @Column({
     allowNull: false,
-    unique: true,
+    unique: 'UNIQUELOGR',
   })
   logradouro: string;
 

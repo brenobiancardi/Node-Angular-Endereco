@@ -8,8 +8,7 @@ export class EnderecosService {
   constructor(@InjectModel(Endereco) private enderecoModel: typeof Endereco) {}
 
   async criar(endereco: EnderecoDTO): Promise<IEnderecoRespostas> {
-    console.log(endereco);
-    let mensagem = `Erro na criação do logradouro ${endereco.logradouro}`;
+    let mensagem = `Erro na criação do logradouro: ${endereco.logradouro}`;
     let codigoHTTP = HttpStatus.BAD_REQUEST;
     if (endereco) {
       let enderecoCriado: Endereco;
@@ -23,7 +22,9 @@ export class EnderecosService {
           throw new HttpException(
             {
               status: codigoHTTP,
-              error: `Login: ${enderecoCriado.logradouro} ja se encontra criado`,
+              error: `Logradouro: ${
+                endereco.tpLogr + ' ' + endereco.logradouro
+              } ja se encontra criado`,
             },
             codigoHTTP,
           );
@@ -35,40 +36,6 @@ export class EnderecosService {
           endereco: enderecoCriado,
         };
       }
-    }
-    throw new HttpException(
-      {
-        status: codigoHTTP,
-        error: mensagem,
-      },
-      codigoHTTP,
-    );
-  }
-
-  async obterTodos(): Promise<Endereco[]> {
-    return this.enderecoModel.findAll<Endereco>();
-  }
-
-  async obterPorId(id: string): Promise<Endereco> {
-    return this.enderecoModel.findOne<Endereco>({
-      where: {
-        id,
-      },
-    });
-  }
-
-  async deletar(id: string): Promise<IEnderecoRespostas> {
-    let mensagem = `Erro na exclusao do endereco de ${id}`;
-    let codigoHTTP = HttpStatus.BAD_REQUEST;
-    const numExcluidos = await this.enderecoModel.destroy({ where: { id } });
-    if (numExcluidos === 1) {
-      return {
-        status: HttpStatus.OK,
-        mensagem: `Usuario ${id} excluido com sucesso`,
-      };
-    } else if (numExcluidos === 0) {
-      codigoHTTP = HttpStatus.NOT_FOUND;
-      mensagem = `Endereco de ${id} não encontrado`;
     }
     throw new HttpException(
       {
@@ -92,7 +59,6 @@ export class EnderecosService {
           where: { id },
         });
       } catch (e) {
-        console.log(e);
         if (
           ((e.errors[0].path = 'logradouro'),
           (e.errors[0].validatorKey = 'not_unique'))
@@ -120,6 +86,70 @@ export class EnderecosService {
         codigoHTTP = HttpStatus.NOT_FOUND;
         mensagem = `Logradouro não encontrado`;
       }
+    }
+    throw new HttpException(
+      {
+        status: codigoHTTP,
+        error: mensagem,
+      },
+      codigoHTTP,
+    );
+  }
+
+  async obterTodos(): Promise<IEnderecoRespostas> {
+    const enderecosEncontrados = await this.enderecoModel.findAll<Endereco>();
+    if (enderecosEncontrados && enderecosEncontrados.length > 0) {
+      return {
+        status: HttpStatus.OK,
+        mensagem: `${enderecosEncontrados.length} logradouros encontrados`,
+        endereco: enderecosEncontrados,
+      };
+    } else if (!enderecosEncontrados || enderecosEncontrados.length === 0) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `Nenhum logradouro encontrado`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  async obterPorId(id: string): Promise<IEnderecoRespostas> {
+    const enderecoEncontrado = await this.enderecoModel.findOne<Endereco>({
+      where: {
+        id,
+      },
+    });
+    if (enderecoEncontrado) {
+      return {
+        status: HttpStatus.OK,
+        mensagem: `Logradouro: ${enderecoEncontrado.logradouro} encontrado`,
+        endereco: enderecoEncontrado,
+      };
+    } else if (!enderecoEncontrado) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `Logradouro não encontrado`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  async deletar(id: string): Promise<IEnderecoRespostas> {
+    let mensagem = `Erro na exclusao do logradouro de ${id}`;
+    let codigoHTTP = HttpStatus.BAD_REQUEST;
+    const numExcluidos = await this.enderecoModel.destroy({ where: { id } });
+    if (numExcluidos === 1) {
+      return {
+        status: HttpStatus.OK,
+        mensagem: `Logradouro ${id} excluido com sucesso`,
+      };
+    } else if (numExcluidos === 0) {
+      codigoHTTP = HttpStatus.NOT_FOUND;
+      mensagem = `Logradouro não encontrado`;
     }
     throw new HttpException(
       {

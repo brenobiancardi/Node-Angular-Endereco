@@ -3,29 +3,25 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   Post,
   Put,
-  Query,
-  Res,
 } from '@nestjs/common';
 import { EnderecosService } from './enderecos.service';
 import { EnderecoDTO } from './Endereco/endereco.interface';
-import { IEnderecoRespostas } from 'src/common/respostas/enderecoRespostas.interface';
+import { IEnderecoRespostas } from './../common/respostas/enderecoRespostas.interface';
 
 @Controller('api/endereco')
 export class EnderecosController {
   constructor(private enderecosService: EnderecosService) {}
 
   @Get(':id')
-  async listarPorId(@Param('id') id: string): Promise<EnderecoDTO> {
+  async listarPorId(@Param('id') id: string): Promise<IEnderecoRespostas> {
     return this.enderecosService.obterPorId(id);
   }
 
   @Get()
-  async listarTodos(): Promise<EnderecoDTO[]> {
+  async listarTodos(): Promise<IEnderecoRespostas> {
     return this.enderecosService.obterTodos();
   }
 
