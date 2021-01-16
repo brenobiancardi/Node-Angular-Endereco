@@ -13,6 +13,8 @@ describe('EnderecosController', () => {
     create: jest.fn(),
   };
 
+  const AuthServiceMock = {};
+
   beforeEach(async () => {
     const enderecosModule: TestingModule = await Test.createTestingModule({
       controllers: [EnderecosController],
@@ -21,6 +23,10 @@ describe('EnderecosController', () => {
         {
           provide: getModelToken(Endereco),
           useValue: enderecosMockModel,
+        },
+        {
+          provide: 'AuthService',
+          useValue: AuthServiceMock,
         },
       ],
     }).compile();

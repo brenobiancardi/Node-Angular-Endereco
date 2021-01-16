@@ -5,18 +5,31 @@ import { AppService } from './app.service';
 describe('AppController', () => {
   let appController: AppController;
 
+  const AuthServiceMock = {};
+
+  const JwtServiceMock = {};
+
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      imports: [],
+      providers: [
+        AppService,
+        {
+          provide: 'AuthService',
+          useValue: AuthServiceMock,
+        },
+        {
+          provide: 'JwtService',
+          useValue: JwtServiceMock,
+        },
+      ],
     }).compile();
 
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Servidor Executando"', () => {
-      expect(appController.getStatus()).toBe('Servidor Executando');
-    });
+  it('deve estar definido"', () => {
+    expect(appController).toBeDefined();
   });
 });

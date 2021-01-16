@@ -1,5 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { Usuario } from './usuario.entity';
 import { IUsuarioDTO } from './Usuario/usuario.interface';
@@ -135,32 +136,6 @@ export class UsuariosService {
     );
   }
 
-  async realizarLogin(
-    login: string,
-    senha: string,
-  ): Promise<IUsuarioRespostas> {
-    const usuario = await this.usuarioModel.findOne({
-      where: { login, senha },
-    });
-
-    if (usuario) {
-      delete usuario.senha;
-      return {
-        status: HttpStatus.OK,
-        mensagem: `Login realizado com sucesso`,
-        usuario: usuario,
-      };
-    } else if (!usuario) {
-      throw new HttpException(
-        {
-          status: HttpStatus.UNAUTHORIZED,
-          error: `Usuario ou senha invalido`,
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
-  }
-
   async deletar(login: string): Promise<IUsuarioRespostas> {
     let mensagem = `Erro na exclusao do usuario ${login}`;
     let codigoHTTP = HttpStatus.BAD_REQUEST;
@@ -185,5 +160,12 @@ export class UsuariosService {
       },
       codigoHTTP,
     );
+  }
+
+  async encontrarUsuario(login: string): Promise<IUsuarioDTO> {
+    const usuarioEncontrado = await this.usuarioModel.findOne({
+      where: { login },
+    });
+    return usuarioEncontrado;
   }
 }

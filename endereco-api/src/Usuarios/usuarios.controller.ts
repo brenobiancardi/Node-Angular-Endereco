@@ -6,26 +6,26 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 
 import { UsuariosService } from './usuarios.service';
 
 import { IUsuarioDTO } from './Usuario/usuario.interface';
 import { IUsuarioRespostas } from './../common/respostas/usuarioRespostas.interface';
+
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 @Controller('usuarios')
 export class UsuariosController {
   constructor(private usuariosService: UsuariosService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async criar(@Body() criarUsuario: IUsuarioDTO): Promise<IUsuarioRespostas> {
     return this.usuariosService.criar(criarUsuario);
   }
 
-  @Post('login')
-  async realizarLogin(@Body() { login, senha }): Promise<IUsuarioRespostas> {
-    return this.usuariosService.realizarLogin(login, senha);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Put()
   async alterar(@Body() usuario: IUsuarioDTO): Promise<IUsuarioRespostas> {
     const id = usuario.id;
@@ -33,6 +33,7 @@ export class UsuariosController {
     return this.usuariosService.alterar(id, usuario);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async listar(@Query('login') login: string): Promise<IUsuarioRespostas> {
     if (login) {
@@ -41,6 +42,7 @@ export class UsuariosController {
     return this.usuariosService.obterTodos();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete()
   async delete(@Query('login') login: string): Promise<IUsuarioRespostas> {
     return this.usuariosService.deletar(login);
