@@ -22,7 +22,7 @@ export class EnderecosService {
           throw new HttpException(
             {
               status: codigoHTTP,
-              error: `Logradouro: ${
+              mensagem: `Logradouro: ${
                 endereco.tpLogr + ' ' + endereco.logradouro
               } ja se encontra criado`,
             },
@@ -40,7 +40,7 @@ export class EnderecosService {
     throw new HttpException(
       {
         status: codigoHTTP,
-        error: mensagem,
+        mensagem: mensagem,
       },
       codigoHTTP,
     );
@@ -66,7 +66,7 @@ export class EnderecosService {
           throw new HttpException(
             {
               status: codigoHTTP,
-              error: `Logradouro: ${endereco.logradouro} ja cadastrado`,
+              mensagem: `Logradouro: ${endereco.logradouro} ja cadastrado`,
             },
             codigoHTTP,
           );
@@ -90,7 +90,7 @@ export class EnderecosService {
     throw new HttpException(
       {
         status: codigoHTTP,
-        error: mensagem,
+        mensagem: mensagem,
       },
       codigoHTTP,
     );
@@ -108,7 +108,7 @@ export class EnderecosService {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: `Nenhum logradouro encontrado`,
+          mensagem: `Nenhum logradouro encontrado`,
         },
         HttpStatus.NOT_FOUND,
       );
@@ -131,7 +131,7 @@ export class EnderecosService {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: `Logradouro não encontrado`,
+          mensagem: `Logradouro não encontrado`,
         },
         HttpStatus.NOT_FOUND,
       );
@@ -154,7 +154,7 @@ export class EnderecosService {
     throw new HttpException(
       {
         status: codigoHTTP,
-        error: mensagem,
+        mensagem: mensagem,
       },
       codigoHTTP,
     );

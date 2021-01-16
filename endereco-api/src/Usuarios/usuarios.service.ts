@@ -10,46 +10,37 @@ import { IUsuarioRespostas } from './../common/respostas/usuarioRespostas.interf
 export class UsuariosService {
   constructor(@InjectModel(Usuario) private usuarioModel: typeof Usuario) {}
 
-  async obterTodos(): Promise<IUsuarioRespostas> {
-    const usuariosEncontrados = await this.usuarioModel.findAll<Usuario>();
-    if (usuariosEncontrados && usuariosEncontrados.length > 0) {
+  async obter(login?: string): Promise<IUsuarioRespostas> {
+    let usuarioEncontrado;
+    if (login) {
+      usuarioEncontrado = await this.usuarioModel.findAll<Usuario>({
+        where: {
+          login,
+        },
+      });
+    } else {
+      usuarioEncontrado = await this.usuarioModel.findAll<Usuario>();
+    }
+    if (usuarioEncontrado && usuarioEncontrado.length > 1) {
       return {
         status: HttpStatus.OK,
-        mensagem: `${usuariosEncontrados.length} Usuarios encontrados`,
-        usuario: usuariosEncontrados,
+        mensagem: `${usuarioEncontrado.length} Usuarios encontrados`,
+        usuario: usuarioEncontrado,
       };
-    } else if (!usuariosEncontrados || usuariosEncontrados.length === 0) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error: `Nenhum Usuario encontrado`,
-        },
-        HttpStatus.NOT_FOUND,
-      );
-    }
-  }
-
-  async obterPorLogin(login: string): Promise<IUsuarioRespostas> {
-    const usuarioEncontrado = await this.usuarioModel.findOne<Usuario>({
-      where: {
-        login,
-      },
-    });
-    if (usuarioEncontrado) {
+    } else if (usuarioEncontrado && usuarioEncontrado.length === 1) {
       return {
         status: HttpStatus.OK,
         mensagem: `Usuario ${login} encontrado`,
         usuario: usuarioEncontrado,
       };
-    } else if (!usuarioEncontrado) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error: `Usuario ${login} não encontrado`,
-        },
-        HttpStatus.NOT_FOUND,
-      );
     }
+    throw new HttpException(
+      {
+        status: HttpStatus.BAD_REQUEST,
+        mensagem: 'Nenhum usuario encontrado com as condições estabelecidas',
+      },
+      HttpStatus.BAD_REQUEST,
+    );
   }
 
   async criar(usuario: IUsuarioDTO): Promise<IUsuarioRespostas> {
@@ -67,7 +58,7 @@ export class UsuariosService {
           throw new HttpException(
             {
               status: codigoHTTP,
-              error: `Login: ${usuario.login} ja se encontra em uso`,
+              mensagem: `Login: ${usuario.login} ja se encontra em uso`,
             },
             codigoHTTP,
           );
@@ -83,7 +74,7 @@ export class UsuariosService {
     throw new HttpException(
       {
         status: codigoHTTP,
-        error: mensagem,
+        mensagem: mensagem,
       },
       codigoHTTP,
     );
@@ -106,7 +97,7 @@ export class UsuariosService {
           throw new HttpException(
             {
               status: codigoHTTP,
-              error: `Login: ${usuario.login} ja se encontra em uso`,
+              mensagem: `Login: ${usuario.login} ja se encontra em uso`,
             },
             codigoHTTP,
           );
@@ -130,7 +121,7 @@ export class UsuariosService {
     throw new HttpException(
       {
         status: codigoHTTP,
-        error: mensagem,
+        mensagem: mensagem,
       },
       codigoHTTP,
     );
@@ -156,7 +147,7 @@ export class UsuariosService {
     throw new HttpException(
       {
         status: codigoHTTP,
-        error: mensagem,
+        mensagem: mensagem,
       },
       codigoHTTP,
     );

@@ -1,7 +1,10 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
+
 import { Test, TestingModule } from '@nestjs/testing';
-import TestUtil from '../common/testes/TestUtil';
 
 import { getModelToken } from '@nestjs/sequelize';
+
+import TestUtil from '../common/testes/TestUtil';
 
 import { Usuario } from './usuario.entity';
 
@@ -15,6 +18,7 @@ describe('UsuariosService', () => {
     findOne: jest.fn(),
     create: jest.fn(),
     destroy: jest.fn(),
+    update: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -40,27 +44,39 @@ describe('UsuariosService', () => {
 
     usuariosMockModel.findAll.mockReturnValue([usuario, usuario]);
 
-    const usuarioRetornado = await usuariosService.obterTodos();
+    const usuarioRetornado = await usuariosService.obter();
 
     expect(usuarioRetornado.status).toEqual(200);
     expect(usuarioRetornado.usuario).toHaveLength(2);
+    expect(usuarioRetornado.mensagem).toEqual(`2 Usuarios encontrados`);
   });
 
   it('Deve listar o usuario filtrado', async () => {
-    const usuario = TestUtil.fornecaMeUsuariosValidos(1);
+    const usuario = TestUtil.fornecaMeUmUsuarioRespostaValido(1);
+    const usuarioDBMock = TestUtil.fornecaMeUsuariosValidos(1);
 
-    usuariosMockModel.findOne.mockReturnValue(usuario);
-    let login = '';
-    if (usuario.login) {
-      login = usuario.login;
-    } else {
-      login = usuario[0].login;
-    }
+    usuariosMockModel.findAll.mockReturnValue([usuarioDBMock]);
 
-    const usuarioRetornado = await usuariosService.obterPorLogin(login);
+    const usuarioRetornado = await usuariosService.obter(usuarioDBMock.login);
 
     expect(usuarioRetornado.status).toEqual(200);
-    expect(usuarioRetornado.usuario).toEqual(usuario);
+    expect(usuarioRetornado.mensagem).toEqual(
+      `Usuario ${usuarioDBMock.login} encontrado`,
+    );
+  });
+
+  it('Deve retornar erro na listagem', async () => {
+    usuariosMockModel.findAll.mockReturnValue([]);
+
+    await expect(usuariosService.obter()).rejects.toThrow(
+      new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          mensagem: 'Nenhum usuario encontrado com as condições estabelecidas',
+        },
+        HttpStatus.BAD_REQUEST,
+      ),
+    );
   });
 
   it('Deve criar um usuario', async () => {
@@ -79,6 +95,27 @@ describe('UsuariosService', () => {
     expect(usuarioRetornado.usuario).toEqual(usuario);
   });
 
+  it('Deve alterar um usuario', async () => {
+    let usuario = TestUtil.fornecaMeUsuariosValidos(1);
+    let usuarioModificado = usuario;
+
+    usuarioModificado.updatedAt = new Date();
+
+    delete usuario.createdAt;
+    delete usuario.updatedAt;
+
+    usuarioModificado.nome = usuario.nome + 'modificado';
+
+    usuariosMockModel.update.mockReturnValue([1]);
+
+    usuariosMockModel.findOne.mockReturnValue(usuarioModificado);
+
+    const usuarioRetornado = await usuariosService.alterar(usuario.id, usuario);
+
+    expect(usuarioRetornado.status).toEqual(200);
+    expect(usuarioRetornado).toHaveProperty('usuario');
+  });
+
   it('Deve excluir um usuario', async () => {
     const usuario = TestUtil.fornecaMeUsuariosValidos(1);
 
@@ -90,5 +127,17 @@ describe('UsuariosService', () => {
     expect(resposta.mensagem).toEqual(
       `Usuario ${usuario.login} excluido com sucesso`,
     );
+  });
+
+  it('Deve retornar um usuario para o sistema de autenticacao', async () => {
+    const usuario = TestUtil.fornecaMeUsuariosValidos(1);
+
+    usuariosMockModel.findOne.mockReturnValue(usuario);
+
+    const usuarioRetornado = await usuariosService.encontrarUsuario(
+      usuario.login,
+    );
+
+    expect(usuarioRetornado).toEqual(usuario);
   });
 });

@@ -36,10 +36,7 @@ export class UsuariosController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async listar(@Query('login') login: string): Promise<IUsuarioRespostas> {
-    if (login) {
-      return this.usuariosService.obterPorLogin(login);
-    }
-    return this.usuariosService.obterTodos();
+    return this.usuariosService.obter(login);
   }
 
   @UseGuards(JwtAuthGuard)
