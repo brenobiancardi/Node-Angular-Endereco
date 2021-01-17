@@ -52,16 +52,11 @@ export class UsuariosService {
         usuarioCriado = await this.usuarioModel.create<Usuario>(usuario);
       } catch (e) {
         if (
-          ((e.errors[0].path = 'login'),
-          (e.errors[0].validatorKey = 'not_unique'))
-        )
-          throw new HttpException(
-            {
-              status: codigoHTTP,
-              mensagem: `Login: ${usuario.login} ja se encontra em uso`,
-            },
-            codigoHTTP,
-          );
+          (e.errors[0].path = 'login') &&
+          (e.errors[0].validatorKey = 'not_unique')
+        ) {
+          mensagem = `Login: ${usuario.login} ja se encontra em uso`;
+        }
       }
       if (usuarioCriado) {
         return {
@@ -140,7 +135,6 @@ export class UsuariosService {
           mensagem: `Usuario ${login} excluido com sucesso`,
         };
       } else if (numExcluidos === 0) {
-        codigoHTTP = HttpStatus.NOT_FOUND;
         mensagem = `Usuario ${login} não encontrado`;
       }
     }

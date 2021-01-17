@@ -16,75 +16,20 @@ export class EnderecosService {
         enderecoCriado = await this.enderecoModel.create(endereco);
       } catch (e) {
         if (
-          ((e.errors[0].path = 'logradouro'),
-          (e.errors[0].validatorKey = 'not_unique'))
-        )
-          throw new HttpException(
-            {
-              status: codigoHTTP,
-              mensagem: `Logradouro: ${
-                endereco.tpLogr + ' ' + endereco.logradouro
-              } ja se encontra criado`,
-            },
-            codigoHTTP,
-          );
+          (e.errors[0].path = 'logradouro') &&
+          (e.errors[0].validatorKey = 'not_unique')
+        ) {
+          mensagem = `Logradouro: ${
+            endereco.tpLogr + ' ' + endereco.logradouro
+          } ja se encontra criado`;
+        }
       }
       if (enderecoCriado) {
         return {
-          status: HttpStatus.OK,
+          status: HttpStatus.CREATED,
           mensagem: `Usuario com login ${enderecoCriado.logradouro} criado com sucesso`,
           endereco: enderecoCriado,
         };
-      }
-    }
-    throw new HttpException(
-      {
-        status: codigoHTTP,
-        mensagem: mensagem,
-      },
-      codigoHTTP,
-    );
-  }
-
-  async alterar(
-    id: string,
-    endereco: IEnderecoDTO,
-  ): Promise<IEnderecoRespostas> {
-    let mensagem = `Erro na alteração do logradouro ${endereco.logradouro}`;
-    let codigoHTTP = HttpStatus.BAD_REQUEST;
-    if (id) {
-      let numAlterados = 0;
-      try {
-        [numAlterados] = await this.enderecoModel.update(endereco, {
-          where: { id },
-        });
-      } catch (e) {
-        if (
-          ((e.errors[0].path = 'logradouro'),
-          (e.errors[0].validatorKey = 'not_unique'))
-        )
-          throw new HttpException(
-            {
-              status: codigoHTTP,
-              mensagem: `Logradouro: ${endereco.logradouro} ja cadastrado`,
-            },
-            codigoHTTP,
-          );
-      }
-      if (numAlterados === 1) {
-        const enderecoAlterado = await this.enderecoModel.findOne({
-          where: {
-            id,
-          },
-        });
-        return {
-          status: HttpStatus.OK,
-          mensagem: `Logradouro ${enderecoAlterado.logradouro} alterado com sucesso`,
-          endereco: enderecoAlterado,
-        };
-      } else if (numAlterados === 0) {
-        codigoHTTP = HttpStatus.NOT_FOUND;
-        mensagem = `Logradouro não encontrado`;
       }
     }
     throw new HttpException(
@@ -107,10 +52,10 @@ export class EnderecosService {
     } else if (!enderecosEncontrados || enderecosEncontrados.length === 0) {
       throw new HttpException(
         {
-          status: HttpStatus.NOT_FOUND,
+          status: HttpStatus.NO_CONTENT,
           mensagem: `Nenhum logradouro encontrado`,
         },
-        HttpStatus.NOT_FOUND,
+        HttpStatus.NO_CONTENT,
       );
     }
   }
@@ -121,6 +66,7 @@ export class EnderecosService {
         id,
       },
     });
+
     if (enderecoEncontrado) {
       return {
         status: HttpStatus.OK,
@@ -130,12 +76,56 @@ export class EnderecosService {
     } else if (!enderecoEncontrado) {
       throw new HttpException(
         {
-          status: HttpStatus.NOT_FOUND,
+          status: HttpStatus.BAD_REQUEST,
           mensagem: `Logradouro não encontrado`,
         },
-        HttpStatus.NOT_FOUND,
+        HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  async alterar(
+    id: string,
+    endereco: IEnderecoDTO,
+  ): Promise<IEnderecoRespostas> {
+    let mensagem = `Erro na alteração do logradouro ${endereco.logradouro}`;
+    let codigoHTTP = HttpStatus.BAD_REQUEST;
+    if (id) {
+      let numAlterados = 0;
+      try {
+        [numAlterados] = await this.enderecoModel.update(endereco, {
+          where: { id },
+        });
+      } catch (e) {
+        if (
+          (e.errors[0].path = 'logradouro') &&
+          (e.errors[0].validatorKey = 'not_unique')
+        ) {
+          mensagem = `Logradouro: ${endereco.logradouro} ja cadastrado`;
+        }
+      }
+      if (numAlterados === 1) {
+        const enderecoAlterado = await this.enderecoModel.findOne({
+          where: {
+            id,
+          },
+        });
+        return {
+          status: HttpStatus.OK,
+          mensagem: `Logradouro ${enderecoAlterado.logradouro} alterado com sucesso`,
+          endereco: enderecoAlterado,
+        };
+      } else if (numAlterados === 0) {
+        mensagem = `Logradouro não encontrado`;
+      }
+    }
+    throw new HttpException(
+      {
+        status: codigoHTTP,
+        mensagem: mensagem,
+      },
+      codigoHTTP,
+    );
   }
 
   async deletar(id: string): Promise<IEnderecoRespostas> {
@@ -145,11 +135,11 @@ export class EnderecosService {
     if (numExcluidos === 1) {
       return {
         status: HttpStatus.OK,
-        mensagem: `Logradouro ${id} excluido com sucesso`,
+        mensagem: 'Logradouro excluido com sucesso',
       };
     } else if (numExcluidos === 0) {
-      codigoHTTP = HttpStatus.NOT_FOUND;
-      mensagem = `Logradouro não encontrado`;
+      codigoHTTP = HttpStatus.BAD_REQUEST;
+      mensagem = 'Logradouro não encontrado';
     }
     throw new HttpException(
       {
