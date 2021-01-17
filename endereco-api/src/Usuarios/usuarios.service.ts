@@ -10,6 +10,38 @@ import { IUsuarioRespostas } from './../common/respostas/usuarioRespostas.interf
 export class UsuariosService {
   constructor(@InjectModel(Usuario) private usuarioModel: typeof Usuario) {}
 
+  async criar(usuario: IUsuarioDTO): Promise<IUsuarioRespostas> {
+    let mensagem = `Erro na criação do usuario ${usuario.login}`;
+    let codigoHTTP = HttpStatus.BAD_REQUEST;
+    if (usuario) {
+      let usuarioCriado: Usuario;
+      try {
+        usuarioCriado = await this.usuarioModel.create<Usuario>(usuario);
+      } catch (e) {
+        if (
+          (e.errors[0].path = 'login') &&
+          (e.errors[0].validatorKey = 'not_unique')
+        ) {
+          mensagem = `Login: ${usuario.login} ja se encontra em uso`;
+        }
+      }
+      if (usuarioCriado) {
+        return {
+          status: HttpStatus.OK,
+          mensagem: `Usuario com login ${usuarioCriado.login} criado com sucesso`,
+          usuario: usuarioCriado,
+        };
+      }
+    }
+    throw new HttpException(
+      {
+        status: codigoHTTP,
+        mensagem: mensagem,
+      },
+      codigoHTTP,
+    );
+  }
+
   async obter(login?: string): Promise<IUsuarioRespostas> {
     let usuarioEncontrado;
     if (login) {
@@ -40,38 +72,6 @@ export class UsuariosService {
         mensagem: 'Nenhum usuario encontrado com as condições estabelecidas',
       },
       HttpStatus.BAD_REQUEST,
-    );
-  }
-
-  async criar(usuario: IUsuarioDTO): Promise<IUsuarioRespostas> {
-    let mensagem = `Erro na criação do usuario ${usuario.login}`;
-    let codigoHTTP = HttpStatus.BAD_REQUEST;
-    if (usuario) {
-      let usuarioCriado: Usuario;
-      try {
-        usuarioCriado = await this.usuarioModel.create<Usuario>(usuario);
-      } catch (e) {
-        if (
-          (e.errors[0].path = 'login') &&
-          (e.errors[0].validatorKey = 'not_unique')
-        ) {
-          mensagem = `Login: ${usuario.login} ja se encontra em uso`;
-        }
-      }
-      if (usuarioCriado) {
-        return {
-          status: HttpStatus.OK,
-          mensagem: `Usuario com login ${usuarioCriado.login} criado com sucesso`,
-          usuario: usuarioCriado,
-        };
-      }
-    }
-    throw new HttpException(
-      {
-        status: codigoHTTP,
-        mensagem: mensagem,
-      },
-      codigoHTTP,
     );
   }
 
@@ -109,7 +109,7 @@ export class UsuariosService {
           usuario: usuarioAlterado,
         };
       } else if (numAlterados === 0) {
-        codigoHTTP = HttpStatus.NOT_FOUND;
+        codigoHTTP = HttpStatus.BAD_REQUEST;
         mensagem = `Usuario ${usuario.login} não encontrado`;
       }
     }
