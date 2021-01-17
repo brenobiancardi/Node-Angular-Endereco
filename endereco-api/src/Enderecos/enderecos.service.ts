@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Endereco } from './endereco.entity';
 import { IEnderecoDTO } from './Endereco/endereco.interface';
 import { IEnderecoRespostas } from './../common/respostas/enderecoRespostas.interface';
+import { EditarEnderecoAPI } from './Endereco/enderecoApi.interface';
 @Injectable()
 export class EnderecosService {
   constructor(@InjectModel(Endereco) private enderecoModel: typeof Endereco) {}
@@ -86,7 +87,7 @@ export class EnderecosService {
 
   async alterar(
     id: string,
-    endereco: IEnderecoDTO,
+    endereco: EditarEnderecoAPI,
   ): Promise<IEnderecoRespostas> {
     let mensagem = `Erro na alteração do logradouro ${endereco.logradouro}`;
     let codigoHTTP = HttpStatus.BAD_REQUEST;

@@ -6,6 +6,8 @@ import { Usuario } from './usuario.entity';
 import { IUsuarioDTO } from './Usuario/usuario.interface';
 
 import { IUsuarioRespostas } from './../common/respostas/usuarioRespostas.interface';
+
+import { EditarUsuarioAPI } from './Usuario/usuarioApi.interface';
 @Injectable()
 export class UsuariosService {
   constructor(@InjectModel(Usuario) private usuarioModel: typeof Usuario) {}
@@ -75,7 +77,10 @@ export class UsuariosService {
     );
   }
 
-  async alterar(id: number, usuario: IUsuarioDTO): Promise<IUsuarioRespostas> {
+  async alterar(
+    id: number,
+    usuario: EditarUsuarioAPI,
+  ): Promise<IUsuarioRespostas> {
     let mensagem = `Erro na alteração do usuario ${usuario.login}`;
     let codigoHTTP = HttpStatus.BAD_REQUEST;
     if (id) {

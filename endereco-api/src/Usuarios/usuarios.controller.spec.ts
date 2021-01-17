@@ -5,8 +5,6 @@ import { UsuariosController } from './usuarios.controller';
 import { UsuariosService } from './usuarios.service';
 import { Usuario } from './usuario.entity';
 
-import TestUtil from '../common/testes/TestUtil';
-
 describe('usuariosController', () => {
   let usuariosController: UsuariosController;
 

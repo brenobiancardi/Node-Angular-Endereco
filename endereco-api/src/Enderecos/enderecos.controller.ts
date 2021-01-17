@@ -15,9 +15,23 @@ import { IEnderecoRespostas } from './../common/respostas/enderecoRespostas.inte
 
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  CriarEnderecoAPI,
+  EditarEnderecoAPI,
+} from './Endereco/enderecoApi.interface';
+
+@ApiBearerAuth()
+@ApiTags('Enderecos')
 @Controller('api/endereco')
 export class EnderecosController {
   constructor(private enderecosService: EnderecosService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  async criar(@Body() endereco: CriarEnderecoAPI): Promise<IEnderecoRespostas> {
+    return this.enderecosService.criar(endereco);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
@@ -33,16 +47,12 @@ export class EnderecosController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  async alterar(@Body() endereco: IEnderecoDTO): Promise<IEnderecoRespostas> {
+  async alterar(
+    @Body() endereco: EditarEnderecoAPI,
+  ): Promise<IEnderecoRespostas> {
     const id = String(endereco.id);
     delete endereco.id;
     return this.enderecosService.alterar(id, endereco);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  async criar(@Body() endereco: IEnderecoDTO): Promise<IEnderecoRespostas> {
-    return this.enderecosService.criar(endereco);
   }
 
   @UseGuards(JwtAuthGuard)
