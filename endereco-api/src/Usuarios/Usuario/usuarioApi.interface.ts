@@ -31,3 +31,11 @@ export class EditarUsuarioAPI {
   @ApiProperty()
   senha?: string;
 }
+
+export class loginAPI {
+  @ApiProperty()
+  login: string;
+
+  @ApiProperty()
+  senha: string;
+}

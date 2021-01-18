@@ -11,22 +11,25 @@ export class AppService {
   }
 
   async realizarLogin(login: string, senha: string): Promise<ILoginRespostas> {
-    const usuario = await this.authService.validarUsuario(login, senha);
-    if (usuario) {
-      const token = await this.authService.login(usuario);
-      return {
-        status: HttpStatus.OK,
-        mensagem: `Login realizado com sucesso`,
-        token: String(token),
-      };
-    } else if (!usuario) {
-      throw new HttpException(
-        {
-          status: HttpStatus.UNAUTHORIZED,
-          error: `Usuario ou senha invalido`,
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
+    if (login && senha) {
+      const usuario = await this.authService.validarUsuario(login, senha);
+      if (usuario) {
+        const token = await this.authService.login(usuario);
+        return {
+          status: HttpStatus.OK,
+          mensagem: `Login realizado com sucesso`,
+          autenticado: true,
+          token: String(token),
+        };
+      }
     }
+    throw new HttpException(
+      {
+        status: HttpStatus.UNAUTHORIZED,
+        error: `Usuario ou senha invalido`,
+        autenticado: false,
+      },
+      HttpStatus.UNAUTHORIZED,
+    );
   }
 }
