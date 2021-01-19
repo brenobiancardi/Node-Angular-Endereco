@@ -98,11 +98,10 @@ export class EnderecosService {
           where: { id },
         });
       } catch (e) {
-        if (
-          (e.errors[0].path = 'logradouro') &&
-          (e.errors[0].validatorKey = 'not_unique')
-        ) {
+        console.log(e);
+        if ((e.errors[0].validatorKey = 'not_unique')) {
           mensagem = `Logradouro: ${endereco.logradouro} ja cadastrado`;
+          numAlterados = -1;
         }
       }
       if (numAlterados === 1) {

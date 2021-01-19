@@ -7,6 +7,10 @@ import { map, catchError } from 'rxjs/operators';
 
 import { Address } from './address.model';
 import { LoginService } from '../login/login.service';
+import {
+  AddressResponse,
+  AddressResponseArray,
+} from '../login/responseAPI.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,14 +31,16 @@ export class AddressService {
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        token: userToken,
+        Authorization: `Bearer ${userToken}`,
       }),
     };
   }
 
-  loadAddress(options: any = this.httpOptions): Observable<Address[]> {
+  loadAddress(
+    options: any = this.httpOptions
+  ): Observable<AddressResponseArray> {
     this.httpOptions = options;
-    return this.http.get<Address[]>(this.baseUrl, options).pipe(
+    return this.http.get<AddressResponseArray>(this.baseUrl, options).pipe(
       map((obj) => obj),
       catchError((e) => {
         return this.messageService.errorHandler(e);
@@ -45,9 +51,9 @@ export class AddressService {
   loadAddressById(
     id: string,
     httpOptions: any = this.httpOptions
-  ): Observable<Address> {
+  ): Observable<AddressResponse> {
     const url = `${this.baseUrl}/${id}`;
-    return this.http.get<Address>(url, httpOptions).pipe(
+    return this.http.get<AddressResponse>(url, httpOptions).pipe(
       map((obj) => obj),
       catchError((e) => {
         return this.messageService.errorHandler(e);
@@ -55,7 +61,7 @@ export class AddressService {
     );
   }
   deleteAddress(id: number): Observable<Address> {
-    const url = `${this.baseUrl}?id=${id}`;
+    const url = `${this.baseUrl}/${id}`;
     return this.http.delete<Address>(url, this.httpOptions).pipe(
       map((obj) => obj),
       catchError((e) => {
@@ -68,7 +74,7 @@ export class AddressService {
     return this.http.put<Address>(this.baseUrl, address, this.httpOptions).pipe(
       map((obj) => obj),
       catchError((e) => {
-        return this.messageService.errorHandler(e);
+        return this.messageService.errorHandler(e.error.mensagem, 'manual');
       })
     );
   }
@@ -79,7 +85,7 @@ export class AddressService {
       .pipe(
         map((obj) => obj),
         catchError((e) => {
-          return this.messageService.errorHandler(e);
+          return this.messageService.errorHandler(e.error.mensagem, 'manual');
         })
       );
   }

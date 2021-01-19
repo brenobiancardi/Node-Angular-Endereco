@@ -24,8 +24,8 @@ export class AddressReadComponent implements OnInit {
 
   ngOnInit(): void {
     this.addressService.token();
-    this.addressService.loadAddress().subscribe((address) => {
-      this.loadedAddress = address;
+    this.addressService.loadAddress().subscribe((response) => {
+      this.loadedAddress = response.endereco;
     });
   }
 

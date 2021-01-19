@@ -20,8 +20,8 @@ export class AddressEditComponent implements OnInit {
   ngOnInit(): void {
     this.addressService.token();
     const id = this.route.snapshot.paramMap.get('id');
-    this.addressService.loadAddressById(id).subscribe((address) => {
-      this.loadedAddress = address;
+    this.addressService.loadAddressById(id).subscribe((response) => {
+      this.loadedAddress = response.endereco;
     });
   }
 }

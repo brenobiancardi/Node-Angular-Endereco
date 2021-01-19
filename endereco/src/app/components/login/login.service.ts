@@ -22,7 +22,19 @@ export class LoginService {
     return this.http.post<ResponseAPI>(this.baseUrl, login).pipe(
       map((obj) => this.messageService.processResponse(obj)),
       catchError((e) => {
-        return this.messageService.errorHandler(e, 'auto');
+        console.log(e.error);
+        if (
+          e.error.status === 401 &&
+          e.error.error === 'Usuario ou senha invalido'
+        ) {
+          return this.messageService.errorHandler(
+            e.error.error,
+            'manual',
+            e.error.autenticado
+          );
+        } else {
+          return this.messageService.errorHandler(e, 'auto');
+        }
       })
     );
   }

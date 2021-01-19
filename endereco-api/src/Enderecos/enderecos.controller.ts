@@ -50,6 +50,7 @@ export class EnderecosController {
   async alterar(
     @Body() endereco: EditarEnderecoAPI,
   ): Promise<IEnderecoRespostas> {
+    console.log(endereco);
     const id = String(endereco.id);
     delete endereco.id;
     return this.enderecosService.alterar(id, endereco);
